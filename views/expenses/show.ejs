@@ -1,0 +1,42 @@
+<% layout("layouts/boilerplate.ejs") %>
+
+<div class="container my-5">
+    <a href="/expenses" class="btn btn-secondary mb-3">
+        <i class="fa-solid fa-arrow-left me-2"></i> &nbsp;<b>Back to All Expenses</b> 
+      </a>
+  <div class="row g-4 align-items-center justify-content-center">
+
+    <!-- Left: Large Image -->
+    <div class="col-md-6">
+      <img src="<%= expense.image %>" alt="Expense Image"
+        class="img-fluid rounded shadow"
+        style="width: 100%; height: 100%; object-fit: cover; max-height: 500px;">
+    </div>
+
+    <!-- Right: Expense Info -->
+    <div class="col-md-6">
+      <div class="card shadow-sm p-4">
+        <h3 class="fw-bold text-center mb-4">Expense Details</h3>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>Title:</strong> <%= expense.title %></li>
+          <li class="list-group-item"><strong>Amount:</strong> ₹<%= expense.amount.toLocaleString("en-IN") %></li>
+          <li class="list-group-item"><strong>Category:</strong> <%= expense.category %></li>
+          <li class="list-group-item"><strong>Date:</strong> <%= expense.date.toDateString() %></li>
+          <li class="list-group-item"><strong>Note:</strong> <%= expense.note || "No additional notes" %></li>
+        </ul>
+
+        <div class="mt-4 d-flex justify-content-between">
+          <a href="/expenses/<%= expense._id %>/edit" class="btn btn-primary w-50 me-2">
+            <i class="fa-solid fa-pen-to-square me-2"></i>Edit
+          </a>
+          <form method="POST" action="/expenses/<%= expense._id %>?_method=DELETE" class="w-50">
+            <button class="btn btn-outline-danger w-100 delete-btn">
+              <i class="fa-solid fa-trash me-2"></i>Delete
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

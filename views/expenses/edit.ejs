@@ -1,0 +1,58 @@
+<% layout("layouts/boilerplate.ejs") %>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 mb-5">
+      <!-- Card box -->
+      <div class="card shadow p-4" id="editExpense">
+        <div class="text-center mb-4 ">
+          <i class="fa-solid fa-pen-to-square fa-2x text-warning mb-2"></i>
+          <h3 class="fw-bold">Edit Expense</h3>
+          <p class="text-muted">Make changes to your expense below.</p>
+        </div>
+
+        <form method="POST" action="/expenses/<%= expense._id %>?_method=PUT" novalidate class="needs-validation">
+
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input name="expense[title]" value="<%= expense.title %>" type="text" required class="form-control">
+            <div class="invalid-feedback">Please enter a title</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="amount" class="form-label">Amount (in ₹)</label>
+            <input name="expense[amount]" value="<%= expense.amount %>" type="number" required class="form-control">
+            <div class="invalid-feedback">Please enter a valid amount</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select name="expense[category]" id="category" class="form-select">
+              <option value="Food" <%= expense.category === "Food" ? "selected" : "" %>>Food</option>
+              <option value="Electricity" <%= expense.category === "Electricity" ? "selected" : "" %>>Electricity</option>
+              <option value="Entertainment" <%= expense.category === "Entertainment" ? "selected" : "" %>>Entertainment</option>
+              <option value="Transport" <%= expense.category === "Transport" ? "selected" : "" %>>Transport</option>
+              <option value="Water" <%= expense.category === "Water" ? "selected" : "" %>>Water</option>
+              <option value="Internet" <%= expense.category === "Internet" ? "selected" : "" %>>Internet</option>
+              <option value="TV" <%= expense.category === "TV" ? "selected" : "" %>>TV</option>
+              <option value="School Fee" <%= expense.category === "School Fee" ? "selected" : "" %>>School Fee</option>
+              <option value="Other" <%= expense.category === "Other" ? "selected" : "" %>>Other</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label for="note" class="form-label">Note <small class="text-muted">(optional)</small></label>
+            <textarea name="expense[note]" class="form-control" rows="3"><%= expense.note %></textarea>
+          </div>
+
+          <div class="d-grid">
+            <button class="btn btn-warning fw-bold">
+              <i class="fa-solid fa-floppy-disk me-2"></i> Update Expense
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,201 @@
+/* Navbar Styling */
+.navbar {
+    padding: 2rem 1rem; /* Increase height */
+   background-color: #004D40 !important; /* Dark Teal */
+}
+
+
+/* Logo Centering */
+.navbar-brand i {
+    color: rgb(255, 255, 255);
+}
+
+/* Navbar Title */
+.navbar-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+}
+
+/* Button Styling */
+.navbar .btn {
+    padding: 0.6rem 1.2rem;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+/* Add Expense Button Styling */
+.navbar .btn-outline-warning {
+    border: 2px solid #FFC107;
+    color: #FFC107;
+    background-color: transparent;
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar .btn-outline-warning:hover {
+    background-color: #FFC107;
+    color: black;
+}
+.fa-solid{
+    color: rgb(253, 253, 253);
+    font-size: 2rem;
+}
+.nav-link{
+    color: #222222 !important;
+}
+
+/* footer */
+.f-info-links a{
+    text-decoration: none;
+    color: #222222;
+}
+.f-info-links a:hover{
+    text-decoration: underline;
+}
+.f-info-links,.f-info-socials,.f-info-brand{
+    width: 100%;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.f-info-socials i{
+    font-size: 2rem;
+    margin-right: 1rem;
+}
+/* Ensure body takes full height */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Make main content take available space */
+.container {
+    flex: 1;
+}
+
+/* Fix the footer to the bottom */
+.f-info {
+    text-align: center;
+    height: 8rem;
+    background-color: #ebebeb;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;  /* Center content */
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+
+/* cards */
+body{
+    font-family: "Plus Jakarta Sans", sans-serif !important; 
+    background: linear-gradient(to right, #f8f9fa, #ffffff);
+   
+}
+/* Add this in style.css or inline if you prefer */
+.shadow {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25) !important;
+    border-radius: 16px;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+/* .card{
+    border: none !important;
+    margin-bottom: 2rem;
+    
+}
+.card-img-top{
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+.card-body{
+    padding: 0 !important;
+}
+.card-text p{
+    font-weight: 400  !important;
+} */
+.listing-link{
+    text-decoration: none;
+}
+
+/* card-effect */
+/* https://getbootstrap.com/docs/5.3/components/card/#about */
+
+/* Hover effect for table rows */
+.expense-row:hover {
+    background-color: rgba(19, 165, 227, 0.1) !important;
+    transition: background-color 0.3s ease-in-out;
+}
+/*btn*/
+.add-btn{
+    background-color: rgb(19, 165, 227)  !important;
+}
+
+/* summary */
+.Summary{
+    background-color: #ebebeb !important;
+}
+/* form */
+#addButton {
+    background-color:  #004d40  !important; /* Dark green */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 8px;
+  }
+
+  #addButton:hover {
+    background-color: #2e7d32 !important; /* Teal-like hover */
+    transform: scale(1.02);
+  }
+
+  #addExpense {
+    background-color: white;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8) !important; /* darker shadow */
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 60px; /* space between card and footer */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  
+  /* Hover effect: scaling forward + deeper shadow */
+  #addExpense:hover {
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.75); /* deeper */
+    transform: scale(1.02); /* zoom out slightly */
+  }
+
+  /* edit page */
+  #editExpense {
+    background-color: white;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 60px;
+    transition: 0.3s ease;
+  }
+  
+  #editExpense:hover {
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+    transform: scale(1.01);
+  }
+
+
+  .delete-btn {
+    transition: 0.3s ease-in-out;
+  }
+  
+  .delete-btn i {
+    color: red;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .delete-btn:hover i {
+    color: white;
+  }
