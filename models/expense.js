@@ -35,7 +35,14 @@ const expenseSchema = new Schema({
             };
             return categoryImages[this.category] || categoryImages["Other"];
         }
-    }
+    },
+    reviews: [
+        {
+            type : Schema.Types.ObjectId,
+            ref : "Review",
+        }
+    ]
+
 });
 
 const Expense = mongoose.model("Expense", expenseSchema);

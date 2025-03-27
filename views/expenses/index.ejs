@@ -1,37 +1,72 @@
 <% layout("layouts/boilerplate.ejs") %>
 
-<body>
-    <br>
-    <div class="container">
-        
+<style>
+    .expense-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        background-color: #e6eee7; /* light green-tinted background */
+        border: 1px solid #c5ccc9;
+        box-shadow: 0 4px 8px rgba(5, 30, 18, 0.8); /* soft green shadow */
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+        margin-bottom: 1rem;
+    }
 
-        <!-- Expense Table below -->
-        <h1 class="fw-bold mb-4 text-center">All Expenses</h1>
-        <div class="row justify-content-center">
-            <div class="col-lg-10 col-md-12">
-                <table class="table table-hover text-center">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Image</th>
-                            <th>Title</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for(let expense of allExpenses) { %>
-                            <tr onclick="window.location.href='/expenses/<%= expense._id %>'" style="cursor: pointer;">
-                                <td>
-                                    <img src="<%= expense.image %>" class="rounded-circle" 
-                                        alt="expense image" 
-                                        style="width: 40px; height: 40px; object-fit: cover;">
-                                </td>
-                                <td><b><%= expense.title %></b></td>
-                                <td>&#8377; <%= expense.amount.toLocaleString("en-IN") %></td>
-                            </tr>
-                        <% } %>
-                    </tbody>
-                </table>
+    .expense-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 14px rgba(9, 46, 29, 0.15); /* deeper green shadow */
+    }
+
+    .expense-img {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #19875422; /* subtle green border */
+    }
+
+    .expense-title {
+        flex: 1;
+        font-weight: 600;
+        font-size: 1rem;
+        color: #1c1c1c;
+    }
+
+    .expense-amount {
+        color: #198754; /* Bootstrap green */
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .expense-container {
+        max-width: 700px;
+        margin: auto;
+    }
+
+    .expense-heading {
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: #123c2f;
+    }
+</style>
+
+<body>
+
+    <br>
+    <div class="container expense-container">
+        <h1 class="expense-heading">All Expenses</h1>
+
+        <% for(let expense of allExpenses) { %>
+            <div class="expense-card" onclick="window.location.href='/expenses/<%= expense._id %>'">
+                <img src="<%= expense.image %>" alt="expense image" class="expense-img">
+                <div class="expense-title"><%= expense.title %></div>
+                <div class="expense-amount">&#8377; <%= expense.amount.toLocaleString("en-IN") %></div>
             </div>
-        </div>
+        <% } %>
     </div>
 </body>
