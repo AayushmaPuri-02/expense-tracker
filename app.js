@@ -69,6 +69,7 @@ app.use((req, res, next) => {
     res.locals.info = req.flash("info");
     res.locals.danger = req.flash("danger");
     res.locals.error = req.flash("error");
+    res.locals.currUser = req.user;
     next();
   });
 
@@ -112,10 +113,11 @@ app.use((err,req,res,next)=>{
 // });
 
 // Homepage route (GET /)
-app.get("/", async (req, res) => {
-    const reviews = await Review.find({});
-    console.log(reviews);
-    res.render("expenses/home.ejs", { reviews });
+app.get("/", (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.render("expenses/home.ejs");  // This is your marketing home page
+    }
+    res.redirect("/expenses"); // Already logged in? Go to expenses
 });
 // This should go at the end, AFTER all other routes
 app.all("*", (req, res, next) => {

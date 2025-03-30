@@ -6,33 +6,35 @@ const ExpressError = require("../utils/ExpressError.js");
 const { validateExpense } = require("../middleware/validateExpense");
 const Expense = require("../models/expense.js"); // Importing Expense model
 const upload = require("../middleware/multer.js");
+const {isLoggedIn} = require("../middleware/isLoggedIn.js");
 
 // Index route - Show all expenses
-router.get("/", async (req, res) => {
-    let allExpenses = await Expense.find({});
-    let totalExpenses = allExpenses.reduce((sum, exp) => sum + exp.amount, 0); // Calculate total
-    res.render("expenses/index.ejs", { allExpenses, totalExpenses });
+router.get("/", isLoggedIn, async (req, res) => {
+  const allExpenses = await Expense.find({ owner: req.user._id });
+  const totalExpenses = allExpenses.reduce((sum, exp) => sum + exp.amount, 0);
+  res.render("expenses/index.ejs", { allExpenses, totalExpenses });
 });
-
 // New Expense Form Route (GET)
-router.get("/new", (req, res) => {
+router.get("/new",isLoggedIn, (req, res) => {
+
     res.render("expenses/new.ejs");
 });
 
 // Show route - Display details of a single expense
-router.get("/:id", wrapAsync( async (req, res) => {
+router.get("/:id", isLoggedIn, wrapAsync( async (req, res) => {
     let { id } = req.params;
-    const expense = await Expense.findById(id);
+    const expense = await Expense.findById(id).populate("owner");
     if(!expense){
         req.flash("error", "the expense you requested does not exist");
         res.redirect("/expenses");
     }
+    console.log(expense);
     res.render("expenses/show.ejs", { expense });
 }));
 
 //CREATE ROUTE
 router.post(
-    "/",
+    "/", isLoggedIn,
     upload.single("image"),       // handle image upload from <input name="image">
     validateExpense,              // validate fields like title, amount, etc.
     wrapAsync(async (req, res, next) => {
@@ -52,13 +54,15 @@ router.post(
       }
   
       const newExpense = new Expense(expenseData);
+      newExpense.owner = req.user._id;
       await newExpense.save();
+
       req.flash("success", "New expense added in the list");
       res.redirect("/expenses");
     })
   );
 //Edit route
-router.get("/:id/edit", wrapAsync( async (req,res)=>{
+router.get("/:id/edit", isLoggedIn, wrapAsync( async (req,res)=>{
     let { id } = req.params;
     const expense = await Expense.findById(id);
     if(!expense){
@@ -70,7 +74,7 @@ router.get("/:id/edit", wrapAsync( async (req,res)=>{
 
 
 // UPDATE route
-router.put("/:id", validateExpense, wrapAsync(async (req, res) => {
+router.put("/:id", isLoggedIn, validateExpense, wrapAsync(async (req, res) => {
     let { id } = req.params;
     req.body.expense.date = new Date(); // updating date
     await Expense.findByIdAndUpdate(id, { ...req.body.expense });
@@ -79,7 +83,7 @@ router.put("/:id", validateExpense, wrapAsync(async (req, res) => {
 }));
 
 //Delete route
-router.delete("/:id",wrapAsync( async (req, res) => {
+router.delete("/:id", isLoggedIn, wrapAsync( async (req, res) => {
     let { id } = req.params;
    let deleted = await Expense.findByIdAndDelete(id);
    console.log(deleted);

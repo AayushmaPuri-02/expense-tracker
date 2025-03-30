@@ -60,7 +60,7 @@
     <br>
     <div class="container expense-container">
         <h1 class="expense-heading">All Expenses</h1>
-
+<h3><%= currUser.username %></h3>
         <% for(let expense of allExpenses) { %>
             <div class="expense-card" onclick="window.location.href='/expenses/<%= expense._id %>'">
                 <img src="<%= expense.image %>" alt="expense image" class="expense-img">
