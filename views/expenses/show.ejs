@@ -1,5 +1,6 @@
 <% layout("layouts/boilerplate.ejs") %>
 
+</style>
 <div class="container my-5">
     <a href="/expenses" class="btn btn-secondary mb-3">
         <i class="fa-solid fa-arrow-left me-2"></i> &nbsp;<b>Back to All Expenses</b> 
@@ -18,7 +19,7 @@
       <div class="card shadow-sm p-4">
         <h3 class="fw-bold text-center mb-4">Expense Details</h3>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"><strong>Title:</strong> <%= expense.title %></li>
+          <li class="list-group-item "><strong>Title:</strong> <%= expense.title %></li>
           <li class="list-group-item"><strong>Amount:</strong> ₹<%= expense.amount.toLocaleString("en-IN") %></li>
           <li class="list-group-item"><strong>Category:</strong> <%= expense.category %></li>
           <li class="list-group-item"><strong>Date:</strong> <%= expense.date.toDateString() %></li>

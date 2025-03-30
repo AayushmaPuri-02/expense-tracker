@@ -1,9 +1,90 @@
 <% layout("layouts/boilerplate.ejs") %>
 
-<h1>Test Reviews</h1>
+<style>
+  body {
+    /* background: url("https://images.unsplash.com/photo-1723392979563-8ac752dba0c2?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") no-repeat center center fixed; */
+    background: url("https://images.unsplash.com/photo-1723392979563-8ac752dba0c2?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") no-repeat center center fixed;
+    background-size: cover;
+  }
 
-<ul>
-  <% for(let review of reviews) { %>
-    <li><%= review.comment %> - <%= review.rating %></li>
-  <% } %>
-</ul>
+  .overlay {
+  background-color: rgba(221, 247, 217, 0.8); /* <-- more transparent */
+  padding: 3rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+  .feature-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .btn-custom {
+    padding: 10px 25px;
+    font-weight: 500;
+    border-radius: 8px;
+  }
+</style>
+
+<div class="container my-5 overlay">
+  <!-- Hero Section -->
+  <div class="row align-items-center mb-5">
+    <div class="col-md-6">
+      <h1 class="fw-bold">Take Control of Your Finances with <span class="text-success">Expense Tracker</span></h1>
+      <p class="lead">Track your daily spending, set savings goals, and manage your money smarter — all in one place.</p>
+      <a href="/signup" class="btn btn-dark btn-custom me-2">Get Started</a>
+      <a href="#" class="btn btn-outline-dark btn-custom">Learn More</a>
+    </div>
+    <div class="col-md-6">
+      <img src="https://plus.unsplash.com/premium_photo-1676983352221-622a946eadbb?q=80&w=3280&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Money Image" class="img-fluid rounded shadow-sm">
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="mb-5 text-center">
+    <h2 class="fw-bold mb-4">Track, Manage, and Grow Your Finances</h2>
+    <p class="mb-4">Our expense tracker helps you monitor your daily expenses, categorize spending, and visualize where your money goes. Stay informed and in control with real-time insights.</p>
+    
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card">
+          <i class="bi bi-clipboard-data mb-3 fs-1 text-success"></i>
+          <h5 class="fw-bold">Track Spending Habits</h5>
+          <p>Log your expenses and view them by category and date.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <i class="bi bi-cash-coin mb-3 fs-1 text-primary"></i>
+          <h5 class="fw-bold">Stay on Budget</h5>
+          <p>Set monthly limits and avoid overspending.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <i class="bi bi-pie-chart mb-3 fs-1 text-warning"></i>
+          <h5 class="fw-bold">Visualize Your Expenses</h5>
+          <p>Use charts and summaries to understand your financial habits.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visual Section -->
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <h3 class="fw-bold">Your Smart Financial Assistant</h3>
+      <p>Whether you're saving for something big or just trying to manage your daily costs, our tool helps you stay on top of every dollar. Add, update, and review expenses anytime, from anywhere.</p>
+    </div>
+    <div class="col-md-6">
+      <img src="https://plus.unsplash.com/premium_photo-1677865215410-53cb37afd133?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Expense Statistics" class="img-fluid rounded shadow-sm">
+    </div>
+  </div>
+</div>

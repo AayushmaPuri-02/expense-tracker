@@ -69,6 +69,7 @@ html, body {
     margin: 0;
     display: flex;
     flex-direction: column;
+
 }
 
 /* Make main content take available space */
@@ -94,7 +95,8 @@ html, body {
 /* cards */
 body{
     font-family: "Plus Jakarta Sans", sans-serif !important; 
-    background: linear-gradient(to right, #f8f9fa, #ffffff);
+    background-color: white;
+    
    
 }
 /* Add this in style.css or inline if you prefer */
