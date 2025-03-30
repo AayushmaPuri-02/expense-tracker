@@ -12,9 +12,15 @@ const ExpressError = require("./utils/ExpressError.js")
 const { expenseSchema } = require("./schema");
 const { validateExpense } = require("./middleware/validateExpense");
 const upload = require("./middleware/multer");
+//routers
 const expenses = require ("./routes/expense.js");
+const userRouter = require("./routes/user.js");
 const session = require("express-session");
 const flash = require("connect-flash");
+//authentication
+const passport = require("passport"); //Passport is a middleware for authentication in Node.js.
+const LocalStrategy = require("passport-local"); //You used passport-local strategy for local authentication (username + password).
+const User = require("./models/user.js");
 
 app.set("view engine", "ejs");  // Set EJS as the view engine
 app.set("views", path.join(__dirname, "views")); // Set views folder
@@ -36,7 +42,6 @@ main().then(()=>{
 });
 
 
-
 const sessionOptions = {
     secret : "mysecretcode" , 
     resave : false, 
@@ -49,10 +54,15 @@ const sessionOptions = {
 }
 
 
-
 app.use(session(sessionOptions));
 app.use(flash());
 
+//authetication
+app.use(passport.initialize()) //a middleware that initializes passport
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate())); //all the users should be autheticated by LocalStrategy and autheticate method will be used.// Login handler
+passport.serializeUser(User.serializeUser()); //storing users info in a session
+passport.deserializeUser(User.deserializeUser());// Get user from session
 
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
@@ -61,12 +71,24 @@ app.use((req, res, next) => {
     res.locals.error = req.flash("error");
     next();
   });
+
+
+  //thsi is demo for the application of authentication
+//   app.get("/demouser", async (req,res)=>{
+//     let fakeUser = new User({
+//         email : "demouser12@gmail.com",
+//         username : "Lizzy"
+//     });
+//     let registredUser = await User.register(fakeUser,"helloworld");
+//     res.send(registredUser);
+//   })
 // app.use((req,res,next)=>{
 //     res.locals.success = req.flash("success");
 //     console.log(res.locals.success);
 // next();
 // })
 app.use("/expenses", expenses);
+app.use("/", userRouter);
 // This should go at the end, AFTER all other routes
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page not found!"));
@@ -77,8 +99,6 @@ app.use((err,req,res,next)=>{
     res.status(statusCode).render("error.ejs", {message});
     //res.status(statusCode).send(message);
 })
-
-
 
 // Test route to add an expense
 // app.get("/testexpense", async (req, res) => {
