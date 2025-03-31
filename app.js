@@ -72,7 +72,10 @@ app.use((req, res, next) => {
     res.locals.currUser = req.user;
     next();
   });
-
+//review
+const reviewRoutes = require("./routes/review")
+app.use("/reviews", reviewRoutes);
+//review
 
   //thsi is demo for the application of authentication
 //   app.get("/demouser", async (req,res)=>{
@@ -113,12 +116,23 @@ app.use((err,req,res,next)=>{
 // });
 
 // Homepage route (GET /)
-app.get("/", (req, res) => {
-    if (!req.isAuthenticated()) {
-        return res.render("expenses/home.ejs");  // This is your marketing home page
-    }
-    res.redirect("/expenses"); // Already logged in? Go to expenses
+// app.get("/", async (req, res) => {
+//     const reviews = await Review.find({}).populate("author");
+    
+//     // If not logged in, show home page with reviews and signup/login buttons
+//     if (!req.isAuthenticated()) {
+//         return res.render("expenses/home.ejs", { reviews });
+//     }
+
+//     // Logged-in users also see reviews
+//     res.render("expenses/home.ejs", { reviews });
+// });
+
+app.get("/", async (req, res) => {
+    const reviews = await Review.find({}).populate("author");
+    res.render("expenses/home.ejs", { reviews });
 });
+
 // This should go at the end, AFTER all other routes
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page not found!"));

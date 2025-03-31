@@ -23,7 +23,12 @@ router.get("/new",isLoggedIn, (req, res) => {
 // Show route - Display details of a single expense
 router.get("/:id", isLoggedIn, wrapAsync( async (req, res) => {
     let { id } = req.params;
-    const expense = await Expense.findById(id).populate("owner");
+    const expense = await Expense.findById(id).populate( {
+      path : "reviews",
+      populate:{
+        path : "author",
+      },
+    }).populate("owner");
     if(!expense){
         req.flash("error", "the expense you requested does not exist");
         res.redirect("/expenses");
@@ -61,6 +66,7 @@ router.post(
       res.redirect("/expenses");
     })
   );
+
 //Edit route
 router.get("/:id/edit", isLoggedIn, wrapAsync( async (req,res)=>{
     let { id } = req.params;
@@ -75,11 +81,11 @@ router.get("/:id/edit", isLoggedIn, wrapAsync( async (req,res)=>{
 
 // UPDATE route
 router.put("/:id", isLoggedIn, validateExpense, wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    req.body.expense.date = new Date(); // updating date
-    await Expense.findByIdAndUpdate(id, { ...req.body.expense });
-    req.flash("info", " Expense updated successfully ");
-    res.redirect(`/expenses/${id}`);
+  let { id } = req.params;
+  req.body.expense.date = new Date();
+  await Expense.findByIdAndUpdate(id, { ...req.body.expense });
+  req.flash("info", "Expense updated successfully");
+  res.redirect(`/expenses/${id}`);
 }));
 
 //Delete route
