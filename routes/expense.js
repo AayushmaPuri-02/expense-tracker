@@ -8,93 +8,23 @@ const Expense = require("../models/expense.js"); // Importing Expense model
 const upload = require("../middleware/multer.js");
 const {isLoggedIn} = require("../middleware/isLoggedIn.js");
 
-// Index route - Show all expenses
-router.get("/", isLoggedIn, async (req, res) => {
-  const allExpenses = await Expense.find({ owner: req.user._id });
-  const totalExpenses = allExpenses.reduce((sum, exp) => sum + exp.amount, 0);
-  res.render("expenses/index.ejs", { allExpenses, totalExpenses });
-});
+const expenseController = require("../controllers/expense.js");
+
+router.route("/")
+.get(isLoggedIn,expenseController.index)
+.post(isLoggedIn,
+  upload.single("image"),       // handle image upload from <input name="image">
+  validateExpense,              // validate fields like title, amount, etc.
+  wrapAsync(expenseController.createExpense)
+);
+
 // New Expense Form Route (GET)
-router.get("/new",isLoggedIn, (req, res) => {
+router.get("/new",isLoggedIn, expenseController.renderNewForm);
 
-    res.render("expenses/new.ejs");
-});
-
-// Show route - Display details of a single expense
-router.get("/:id", isLoggedIn, wrapAsync( async (req, res) => {
-    let { id } = req.params;
-    const expense = await Expense.findById(id).populate( {
-      path : "reviews",
-      populate:{
-        path : "author",
-      },
-    }).populate("owner");
-    if(!expense){
-        req.flash("error", "the expense you requested does not exist");
-        res.redirect("/expenses");
-    }
-    console.log(expense);
-    res.render("expenses/show.ejs", { expense });
-}));
-
-//CREATE ROUTE
-router.post(
-    "/", isLoggedIn,
-    upload.single("image"),       // handle image upload from <input name="image">
-    validateExpense,              // validate fields like title, amount, etc.
-    wrapAsync(async (req, res, next) => {
-      let imagePath;
-  
-      // If user uploaded an image, use it. Else, use default from category
-      if (req.file) {
-        imagePath = "/uploads/" + req.file.filename; // accessible from public folder
-      } else {
-        // Fallback: Use default category image (already handled in schema)
-        imagePath = undefined;
-      }
-  
-      const expenseData = req.body.expense;
-      if (imagePath) {
-        expenseData.image = imagePath;
-      }
-  
-      const newExpense = new Expense(expenseData);
-      newExpense.owner = req.user._id;
-      await newExpense.save();
-
-      req.flash("success", "New expense added in the list");
-      res.redirect("/expenses");
-    })
-  );
+router.route("/:id").get( isLoggedIn, wrapAsync( expenseController.showExpenses))
+.put( isLoggedIn, validateExpense, wrapAsync(expenseController.updateExpense))
+.delete( isLoggedIn, wrapAsync( expenseController.destroyExpense));
 
 //Edit route
-router.get("/:id/edit", isLoggedIn, wrapAsync( async (req,res)=>{
-    let { id } = req.params;
-    const expense = await Expense.findById(id);
-    if(!expense){
-        req.flash("error", "the expense you requested does not exist");
-        res.redirect("/expenses");
-    }
-    res.render("expenses/edit.ejs",{expense});
-}));
-
-
-// UPDATE route
-router.put("/:id", isLoggedIn, validateExpense, wrapAsync(async (req, res) => {
-  let { id } = req.params;
-  req.body.expense.date = new Date();
-  await Expense.findByIdAndUpdate(id, { ...req.body.expense });
-  req.flash("info", "Expense updated successfully");
-  res.redirect(`/expenses/${id}`);
-}));
-
-//Delete route
-router.delete("/:id", isLoggedIn, wrapAsync( async (req, res) => {
-    let { id } = req.params;
-   let deleted = await Expense.findByIdAndDelete(id);
-   console.log(deleted);
-   req.flash("danger", " Expense deleted ");
-    res.redirect("/expenses");
-}));
-
+router.get("/:id/edit", isLoggedIn, wrapAsync( expenseController.renderEditForm));
 module.exports = router;
