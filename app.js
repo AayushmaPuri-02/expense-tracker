@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV != "production"){
+    require('dotenv').config();
+}
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -95,11 +99,14 @@ app.use("/expenses", expenses);
 app.use("/", userRouter);
 
 
-app.use((err,req,res,next)=>{
-    let {statusCode = 500, message ="something went wrong"} = err;
-    res.status(statusCode).render("error.ejs", {message});
-    //res.status(statusCode).send(message);
-})
+app.use((err, req, res, next) => {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      req.flash("error", "File too large! Please upload an image under 2MB.");
+      return res.redirect("/expenses/new");
+    }
+    let { statusCode = 500, message = "Something went wrong" } = err;
+    res.status(statusCode).render("error.ejs", { message });
+  });
 
 // Test route to add an expense
 // app.get("/testexpense", async (req, res) => {
