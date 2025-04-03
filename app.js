@@ -79,22 +79,8 @@ app.use((req, res, next) => {
 //review
 const reviewRoutes = require("./routes/review")
 app.use("/reviews", reviewRoutes);
-//review
 
-  //thsi is demo for the application of authentication
-//   app.get("/demouser", async (req,res)=>{
-//     let fakeUser = new User({
-//         email : "demouser12@gmail.com",
-//         username : "Lizzy"
-//     });
-//     let registredUser = await User.register(fakeUser,"helloworld");
-//     res.send(registredUser);
-//   })
-// app.use((req,res,next)=>{
-//     res.locals.success = req.flash("success");
-//     console.log(res.locals.success);
-// next();
-// })
+
 app.use("/expenses", expenses);
 app.use("/", userRouter);
 
@@ -108,38 +94,20 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("error.ejs", { message });
   });
 
-// Test route to add an expense
-// app.get("/testexpense", async (req, res) => {
-//     let sampleExpense = new Expense({
-//         title: "Groceries",
-//         amount: 50,
-//         category: "Food",
-//         date: new Date(),
-//         note: "Bought vegetables and fruits"
-//     });
-//     await sampleExpense.save();
-//     console.log("Data saved to the database");
-//     res.send("Expense added successfully");
-// });
 
-// Homepage route (GET /)
-// app.get("/", async (req, res) => {
-//     const reviews = await Review.find({}).populate("author");
-    
-//     // If not logged in, show home page with reviews and signup/login buttons
-//     if (!req.isAuthenticated()) {
-//         return res.render("expenses/home.ejs", { reviews });
-//     }
-
-//     // Logged-in users also see reviews
-//     res.render("expenses/home.ejs", { reviews });
-// });
-
-app.get("/", async (req, res) => {
+  app.get("/", async (req, res) => {
     const reviews = await Review.find({}).populate("author");
-    res.render("expenses/home.ejs", { reviews });
+    let income = null;
+    if (req.user) {
+        const user = await User.findById(req.user._id);
+        income = user.income;
+    }
+    res.render("expenses/home.ejs", { reviews, income });
 });
 
+app.get("/learn-more", (req, res) => {
+    res.render("learnMore.ejs");
+  });
 // This should go at the end, AFTER all other routes
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page not found!"));

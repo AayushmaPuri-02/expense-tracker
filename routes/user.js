@@ -5,6 +5,7 @@ const User = require("../models/user.js");
 const {saveRedirectUrl}  = require("../middleware/isLoggedIn.js");
 const wrapAsync = require("../utils/wrapAsync");
 const userController = require("../controllers/user.js")
+const { isLoggedIn } = require("../middleware/isLoggedIn");
 
 router.route("/signup")
 .get(userController.renderSignupForm)
@@ -16,6 +17,25 @@ router.route("/login")
     {failureRedirect : '/login' , failureFlash : true}), 
     userController.login)
 
+    
 //logout
 router.get("/logout", userController.logout)
+
+// Show income input form
+router.get("/set-income", isLoggedIn, async (req, res) => {
+    const user = await User.findById(req.user._id);
+    res.render("users/setIncome.ejs", { user });
+});
+
+// Handle income form submission
+router.post("/set-income", isLoggedIn, async (req, res) => {
+    const { income } = req.body;
+    const user = await User.findById(req.user._id);
+    user.income = income;
+    await user.save();
+    req.flash("success", "Income updated successfully!");
+    res.redirect("/"); // or to "/expenses" or anywhere you like
+});
+
+
 module.exports = router;

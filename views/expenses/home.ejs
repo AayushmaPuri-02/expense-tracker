@@ -40,115 +40,125 @@
 </style>
 
 <div class="container my-5">
-  <!-- Hero Section -->
-  <div class="section-box">
-    <div class="row align-items-center">
-      <div class="col-md-6">
-        <h1 class="fw-bold">Take Control of Your Finances with <span class="text-success">Expense Tracker</span></h1>
-        <p class="lead">Track your daily spending, set savings goals, and manage your money smarter — all in one place.</p>
-        <a href="/signup" class="btn btn-dark btn-custom me-2">Sign Up</a>
-        <a href="/login" class="btn btn-outline-dark btn-custom">Login</a>
-      </div>
-      <div class="col-md-6">
-        <img src="https://plus.unsplash.com/premium_photo-1676983352221-622a946eadbb?q=80&w=3280&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Money Image" class="img-fluid rounded shadow-sm">
-      </div>
-    </div>
-  </div>
 
-  <!-- Features Section -->
-  <div class="section-box">
-    <h2 class="fw-bold mb-4 text-center">Track, Manage, and Grow Your Finances</h2>
-    <p class="text-center mb-5">Our expense tracker helps you monitor your daily expenses, categorize spending, and visualize where your money goes. Stay informed and in control with real-time insights.</p>
-
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="feature-card">
-          <i class="bi bi-clipboard-data mb-3 fs-1 text-success"></i>
-          <h5 class="fw-bold">Track Spending Habits</h5>
-          <p>Log your expenses and view them by category and date.</p>
+  <!-- Logged Out View -->
+  <% if (!currUser) { %>
+    <!-- Hero Section -->
+    <div class="section-box">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h1 class="fw-bold">Take Control of Your Finances with <span class="text-success">Expense Tracker</span></h1>
+          <p class="lead">Track your daily spending, set savings goals, and manage your money smarter — all in one place.</p>
+          <a href="/signup" class="btn btn-dark btn-custom me-2">Sign Up</a>
+          <a href="/login" class="btn btn-outline-dark btn-custom">Login</a>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="feature-card">
-          <i class="bi bi-cash-coin mb-3 fs-1 text-primary"></i>
-          <h5 class="fw-bold">Stay on Budget</h5>
-          <p>Set monthly limits and avoid overspending.</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="feature-card">
-          <i class="bi bi-pie-chart mb-3 fs-1 text-warning"></i>
-          <h5 class="fw-bold">Visualize Your Expenses</h5>
-          <p>Use charts and summaries to understand your financial habits.</p>
+        <div class="col-md-6">
+          <img src="https://plus.unsplash.com/premium_photo-1676983352221-622a946eadbb?q=80&w=3280&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Money Image" class="img-fluid rounded shadow-sm">
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Review Form -->
-  <% if (currUser) { %>
-  <div class="section-box">
-    <h3 class="mb-3">Leave a Review</h3>
-    <form action="/reviews" method="POST">
-      <div class="mb-3">
-        <textarea name="review[comment]" required placeholder="Leave a review..." class="form-control"></textarea>
+    <!-- Features Section -->
+    <div class="section-box">
+      <h2 class="fw-bold mb-4 text-center">Track, Manage, and Grow Your Finances</h2>
+      <p class="text-center mb-5">Our expense tracker helps you monitor your daily expenses, categorize spending, and visualize where your money goes. Stay informed and in control with real-time insights.</p>
+
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="feature-card">
+            <i class="bi bi-clipboard-data mb-3 fs-1 text-success"></i>
+            <h5 class="fw-bold">Track Spending Habits</h5>
+            <p>Log your expenses and view them by category and date.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <i class="bi bi-cash-coin mb-3 fs-1 text-primary"></i>
+            <h5 class="fw-bold">Stay on Budget</h5>
+            <p>Set monthly limits and avoid overspending.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <i class="bi bi-pie-chart mb-3 fs-1 text-warning"></i>
+            <h5 class="fw-bold">Visualize Your Expenses</h5>
+            <p>Use charts and summaries to understand your financial habits.</p>
+          </div>
+        </div>
       </div>
+    </div>
+  <% } else { %>
 
-      <!-- Starability Section -->
-      <fieldset class="starability-slot mb-3">
-        <legend class="form-label">Your Rating:</legend>
-        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
-        <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-        <label for="first-rate1" title="Terrible">1 star</label>
-        <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-        <label for="first-rate2" title="Not good">2 stars</label>
-        <input type="radio" id="first-rate3" name="review[rating]" value="3" />
-        <label for="first-rate3" title="Average">3 stars</label>
-        <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-        <label for="first-rate4" title="Very good">4 stars</label>
-        <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-        <label for="first-rate5" title="Amazing">5 stars</label>
-      </fieldset>
+    <!-- Logged In User View -->
+     <div class="section-box">
+      <h4>Hello, <%= currUser.username %>!</h4>
+      <p><strong>Your Income:</strong> ₹<%= income %></p>
+      <a href="/set-income" class="btn btn-primary">Update Income</a>
+      <a href="/learn-more" class="btn btn-outline-info ms-2">Learn More</a>
+    </div> 
+   
 
-      <button type="submit" class="btn btn-success">Submit Review</button>
-    </form>
-  </div>
+    <!-- Review Form -->
+    <div class="section-box">
+      <h3 class="mb-3">Leave a Review</h3>
+      <form action="/reviews" method="POST">
+        <div class="mb-3">
+          <textarea name="review[comment]" required placeholder="Leave a review..." class="form-control"></textarea>
+        </div>
+
+        <fieldset class="starability-slot mb-3">
+          <legend class="form-label">Your Rating:</legend>
+          <input type="radio" id="first-rate1" name="review[rating]" value="1" checked />
+          <label for="first-rate1" title="Terrible">1 star</label>
+          <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+          <label for="first-rate2" title="Not good">2 stars</label>
+          <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+          <label for="first-rate3" title="Average">3 stars</label>
+          <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+          <label for="first-rate4" title="Very good">4 stars</label>
+          <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+          <label for="first-rate5" title="Amazing">5 stars</label>
+        </fieldset>
+
+        <button type="submit" class="btn btn-success">Submit Review</button>
+      </form>
+    </div>
   <% } %>
 
-  <!-- All Reviews -->
-  <div class="section-box">
-    <h3 class="mb-3">What users say:</h3>
+<!-- All Reviews -->
+<div class="section-box">
+  <h3 class="mb-3">What users say:</h3>
 
-    <% 
-      let sortedReviews = reviews;
-      if (currUser) {
-        sortedReviews = reviews.sort((a, b) => {
-          const aOwn = a.author && a.author._id.toString() === currUser._id.toString();
-          const bOwn = b.author && b.author._id.toString() === currUser._id.toString();
-          return bOwn - aOwn;
-        });
-      }
-    %>
+  <% 
+    let sortedReviews = reviews;
+    if (currUser) {
+      sortedReviews = reviews.sort((a, b) => {
+        const aOwn = a.author && a.author._id.toString() === currUser._id.toString();
+        const bOwn = b.author && b.author._id.toString() === currUser._id.toString();
+        return bOwn - aOwn;
+      });
+    }
+  %>
 
-    <% for(let review of sortedReviews) { %>
-      <div class="card mb-3">
-        <div class="card-body">
-          <p><%= review.comment %></p>
-          <% if (review.author) { %>
-            <small>By: <%= review.author.username %></small>
-          <% } else { %>
-            <small>By: Anonymous</small>
-          <% } %>
+  <% for(let review of sortedReviews) { %>
+    <div class="card mb-3">
+      <div class="card-body">
+        <p><%= review.comment %></p>
+        <% if (review.author) { %>
+          <small>By: <%= review.author.username %></small>
+        <% } else { %>
+          <small>By: Anonymous</small>
+        <% } %>
 
-          <p class="starability-result" data-rating="<%= review.rating %>"></p>
+        <p class="starability-result" data-rating="<%= review.rating %>"></p>
 
-          <% if(currUser && review.author && currUser._id.equals(review.author._id)) { %>
-            <form action="/reviews/<%= review._id %>?_method=DELETE" method="POST" class="d-inline">
-              <button class="btn btn-sm btn-outline-danger mt-2">Delete</button>
-            </form>
-          <% } %>
-        </div>
+        <% if(currUser && review.author && currUser._id.equals(review.author._id)) { %>
+          <form action="/reviews/<%= review._id %>?_method=DELETE" method="POST" class="d-inline">
+            <button class="btn btn-sm btn-outline-danger mt-2">Delete</button>
+          </form>
+        <% } %>
       </div>
-    <% } %>
-  </div>
+    </div>
+  <% } %>
 </div>
+

@@ -38,7 +38,7 @@ router.route("/")
 router.get("/new",isLoggedIn, expenseController.renderNewForm);
 
 router.route("/:id").get( isLoggedIn, wrapAsync( expenseController.showExpenses))
-.put( isLoggedIn, validateExpense, wrapAsync(expenseController.updateExpense))
+.put( isLoggedIn,  upload.single("image"),      validateExpense, wrapAsync(expenseController.updateExpense))
 .delete( isLoggedIn, wrapAsync( expenseController.destroyExpense));
 
 //Edit route

@@ -1,0 +1,20 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container mt-5">
+  <div class="card shadow p-4">
+    <h3 class="mb-4">Update Your Income</h3>
+    <form method="POST" action="/set-income">
+      <div class="mb-3">
+        <label for="income" class="form-label">Monthly Income (₹)</label>
+        <input
+          type="number"
+          name="income"
+          class="form-control"
+          required
+          value="<%= user.income %>"
+        />
+      </div>
+      <button class="btn btn-success">Save</button>
+    </form>
+  </div>
+</div>

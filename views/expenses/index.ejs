@@ -1,72 +1,158 @@
 <% layout("layouts/boilerplate.ejs") %>
 
 <style>
-    .expense-card {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        padding: 0.75rem 1rem;
-        border-radius: 12px;
-        background-color: #e6eee7; /* light green-tinted background */
-        border: 1px solid #c5ccc9;
-        box-shadow: 0 4px 8px rgba(5, 30, 18, 0.8); /* soft green shadow */
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        cursor: pointer;
-        margin-bottom: 1rem;
-    }
+  .expense-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    background-color: #e6eee7;
+    border: 1px solid #c5ccc9;
+    box-shadow: 0 4px 8px rgba(5, 30, 18, 0.8);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
 
-    .expense-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 14px rgba(9, 46, 29, 0.15); /* deeper green shadow */
-    }
+  .expense-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(9, 46, 29, 0.15);
+  }
 
-    .expense-img {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #19875422; /* subtle green border */
-    }
+  .expense-img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #19875422;
+  }
 
-    .expense-title {
-        flex: 1;
-        font-weight: 600;
-        font-size: 1rem;
-        color: #1c1c1c;
-    }
+  .expense-title {
+    flex: 1;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1c1c1c;
+  }
 
-    .expense-amount {
-        color: #198754; /* Bootstrap green */
-        font-weight: 600;
-        font-size: 1rem;
-    }
+  .expense-amount {
+    color: #198754;
+    font-weight: 600;
+    font-size: 1rem;
+  }
 
-    .expense-container {
-        max-width: 700px;
-        margin: auto;
-    }
+  .expense-heading {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #123c2f;
+  }
 
-    .expense-heading {
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 1.5rem;
-        color: #123c2f;
+  .summary-box {
+    min-width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .summary-box {
+      min-width: 100%;
     }
+  }
 </style>
 
-<body>
-
-    <br>
-    <div class="container expense-container">
-        <h1 class="expense-heading">All Expenses</h1>
-<h3><%= currUser.username %></h3>
-        <% for(let expense of allExpenses) { %>
-            <div class="expense-card" onclick="window.location.href='/expenses/<%= expense._id %>'">
-                <img src="<%= expense.image.url %>" alt="expense image" class="expense-img">
-                <div class="expense-title"><%= expense.title %></div>
-                <div class="expense-amount">&#8377; <%= expense.amount.toLocaleString("en-IN") %></div>
-            </div>
-        <% } %>
+<div class="container my-5">
+  <!-- Summary Row -->
+  <div class="row g-3 justify-content-center mb-4">
+    <!-- Income Box -->
+    <!-- <div class="col-md-4">
+      <div class="alert alert-success d-flex justify-content-between align-items-center shadow-sm summary-box">
+        <h5 class="mb-0">💼 Your Income:</h5>
+        <h4 class="mb-0 text-success">₹<%= currUser.income %></h4>
+      </div>
+    </div> -->
+    <div class="alert alert-success d-flex justify-content-between align-items-center shadow-sm"
+    data-bs-toggle="tooltip"
+    data-bs-placement="top"
+    title="Click to update your income"
+    onclick="window.location.href='/set-income'"
+    style="cursor: pointer;">
+ <h5 class="mb-0">💼 Your Income:</h5>
+ <h4 class="mb-0 text-success">₹<%= currUser.income %></h4>
+</div>
+    <!-- Total Expenses Box -->
+    <div class="col-md-4">
+      <div class="alert alert-info d-flex justify-content-between align-items-center shadow-sm summary-box">
+        <h5 class="mb-0">💰 Total Expenses:</h5>
+        <h4 class="mb-0 text-danger">₹<%= totalExpenses %></h4>
+      </div>
     </div>
-</body>
+  </div>
+
+  <!-- Main Content Row -->
+  <div class="row g-4 align-items-start">
+    <!-- Left: All Expenses -->
+    <div class="col-md-7">
+      <h2 class="expense-heading">All Expenses</h2>
+      <h5 class="mb-3"><%= currUser.username %></h5>
+      <% for(let expense of allExpenses) { %>
+        <div class="expense-card" onclick="window.location.href='/expenses/<%= expense._id %>'">
+          <img src="<%= expense.image.url %>" alt="expense image" class="expense-img">
+          <div class="expense-title"><%= expense.title %></div>
+          <div class="expense-amount">&#8377; <%= expense.amount.toLocaleString("en-IN") %></div>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Right: Pie Chart -->
+    <div class="col-md-5">
+      <div class="card p-3 shadow-sm">
+        <h5 class="mb-3 text-center">Your Spending by Category</h5>
+        <canvas id="expenseChart" width="300" height="300"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const categorySummary = JSON.parse('<%- JSON.stringify(categorySummary || {}) %>');
+  const labels = Object.keys(categorySummary);
+  const data = Object.values(categorySummary);
+
+  const ctx = document.getElementById("expenseChart").getContext("2d");
+
+  new Chart(ctx, {
+    type: "pie",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Spending by Category",
+        data: data,
+        backgroundColor: [
+          '#36A2EB', '#FF6384', '#FFCE56', '#4BC0C0',
+          '#9966FF', '#FF9F40', '#8dd39e', '#d4a5a5',
+          '#b6dbf0', '#f0e68c', '#dda0dd', '#87ceeb'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+      new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+  });
+</script>
