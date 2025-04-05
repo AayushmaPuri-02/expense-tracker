@@ -1,29 +1,68 @@
 const User = require("../models/user.js");
 
-module.exports.renderSignupForm =  (req,res)=>{
-    res.render("users/signup.ejs");
-}
+const emailExistence = require("email-existence");
+const util = require("util");
+const checkEmail = util.promisify(emailExistence.check);
+const questions = require("../utils/securityQuestions");
 
-module.exports.signup = async(req,res)=>{
-    try{
-        let {username, email, password} = req.body;
-        const newUser = new User({email, username});
-        const registredUser=  await User.register(newUser, password);
-        console.log(registredUser);
-        req.login(registredUser, (err)=>{
-            if(err){
-                return next(err);
-            }
-            req.flash("success", "Welcome to expense tracker");
-            res.redirect("/expenses");
-        })
+module.exports.renderSignupForm = (req, res) => {
+  const randomIndex = Math.floor(Math.random() * questions.length);
+  const question = questions[randomIndex];
+  res.render("users/signup.ejs", { question });
+};
+
+// module.exports.signup = async(req,res)=>{
+//     try{
+//         let {username, email, password} = req.body;
+//         const newUser = new User({email, username});
+//         const registredUser=  await User.register(newUser, password);
+//         console.log(registredUser);
+//         req.login(registredUser, (err)=>{
+//             if(err){
+//                 return next(err);
+//             }
+//             req.flash("success", "Welcome to expense tracker");
+//             res.redirect("/expenses");
+//         })
     
-    }catch(e){
-        req.flash("error", e.message);
-        res.redirect("/signup");
+//     }catch(e){
+//         req.flash("error", e.message);
+//         res.redirect("/signup");
+//     }
+
+// }
+module.exports.signup = async (req, res) => {
+  try {
+    let { username, email, password, securityQuestion, securityAnswer } = req.body;
+
+    const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailFormat.test(email)) {
+      req.flash("error", "Please enter a valid email format (e.g., user@example.com)");
+      return res.redirect("/signup");
     }
 
-}
+    const emailValid = await checkEmail(email);
+    if (!emailValid) {
+      req.flash("error", "Please enter a valid and existing email address.");
+      return res.redirect("/signup");
+    }
+
+    const newUser = new User({ email, username, securityQuestion, securityAnswer });
+    const registeredUser = await User.register(newUser, password);
+
+    req.login(registeredUser, (err) => {
+      if (err) {
+        return next(err);
+      }
+      req.flash("success", "Welcome to expense tracker");
+      res.redirect("/expenses");
+    });
+
+  } catch (e) {
+    req.flash("error", e.message);
+    res.redirect("/signup");
+  }
+};
 
 module.exports.renderLoginform =  (req,res)=>{
     res.render("users/login.ejs");

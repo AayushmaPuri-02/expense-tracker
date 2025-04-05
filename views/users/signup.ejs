@@ -1,9 +1,8 @@
 <% layout("layouts/boilerplate.ejs") %>
-
 <style>
     body { background: #f8f9fa; }
     .signup-container {
-        width: 350px;
+        width: 500px;
         padding: 20px;
         background: white;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -30,7 +29,17 @@
             <label for="password" class="form-label">Password</label>
             <input name="password" id="password" type="password" required class="form-control">
         </div>
-
+        <div class="mb-3">
+            <label>Security Question</label>
+            <textarea name="securityQuestion" class="form-control" rows="2" readonly><%= question %></textarea>
+            <small class="form-text text-danger fw-bold mt-1 d-block">
+              ⚠️ Please note this question and remember your answer. It will be required if you forget your password.
+            </small>
+          </div>
+          <div class="mb-3">
+            <label>Answer</label>
+            <input name="securityAnswer" type="text" class="form-control" required>
+          </div>
         <button type="submit" class="btn btn-success w-100">Sign Up</button>
     </form>
     <p class="text-center mt-3">Already have an account? <a href="/login">Login</a></p>

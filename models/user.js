@@ -9,7 +9,17 @@ const userSchema = new Schema({
     },
     income: {
         type: Number,
-        default: 0 // Users can change it later
+        default: 0
+    },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
+    securityQuestion: {
+        type: String,
+        required: true
+    },
+    securityAnswer: {
+        type: String,
+        required: true
     }
 });
 

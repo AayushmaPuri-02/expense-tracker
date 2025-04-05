@@ -84,6 +84,8 @@ app.use("/reviews", reviewRoutes);
 app.use("/expenses", expenses);
 app.use("/", userRouter);
 
+const passwordResetRoutes = require("./routes/passwordReset");
+app.use("/", passwordResetRoutes);
 
 app.use((err, req, res, next) => {
     if (err.code === "LIMIT_FILE_SIZE") {

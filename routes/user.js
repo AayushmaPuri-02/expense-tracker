@@ -34,8 +34,9 @@ router.post("/set-income", isLoggedIn, async (req, res) => {
     user.income = income;
     await user.save();
     req.flash("success", "Income updated successfully!");
-    res.redirect("/"); // or to "/expenses" or anywhere you like
+    res.redirect("/expenses"); // or to "/expenses" or anywhere you like
 });
 
-
+  
+ 
 module.exports = router;
