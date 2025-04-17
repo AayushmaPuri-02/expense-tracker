@@ -1,0 +1,41 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Your Income Records</h2>
+
+  <div class="d-flex justify-content-end mb-3">
+    <a href="/incomes/new" class="btn btn-primary">+ Add New Income</a>
+  </div>
+
+  <% if (incomes.length === 0) { %>
+    <div class="alert alert-info text-center">No income records found. Add one now!</div>
+  <% } else { %>
+    <table class="table table-bordered table-hover shadow">
+      <thead class="table-light">
+        <tr>
+          <th>Amount (₹)</th>
+          <th>Category</th>
+          <th>Note</th>
+          <th>Date</th>
+          <th style="width: 150px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% incomes.forEach(income => { %>
+          <tr>
+            <td><%= income.amount %></td>
+            <td><%= income.category %></td>
+            <td><%= income.note || "—" %></td>
+            <td><%= income.createdAt.toDateString() %></td>
+            <td>
+              <a href="/incomes/<%= income._id %>/edit" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+              <form action="/incomes/<%= income._id %>?_method=DELETE" method="POST" class="d-inline">
+                <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this income?')">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>

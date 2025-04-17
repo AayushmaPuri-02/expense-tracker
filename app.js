@@ -21,6 +21,7 @@ const expenses = require ("./routes/expense.js");
 const userRouter = require("./routes/user.js");
 const session = require("express-session");
 const flash = require("connect-flash");
+const incomeRoutes = require("./routes/income");
 //authentication
 const passport = require("passport"); //Passport is a middleware for authentication in Node.js.
 const LocalStrategy = require("passport-local"); //You used passport-local strategy for local authentication (username + password).
@@ -84,6 +85,8 @@ app.use("/reviews", reviewRoutes);
 app.use("/expenses", expenses);
 app.use("/", userRouter);
 
+app.use("/incomes", incomeRoutes);
+
 const passwordResetRoutes = require("./routes/passwordReset");
 app.use("/", passwordResetRoutes);
 
@@ -96,20 +99,39 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("error.ejs", { message });
   });
 
-
-  app.get("/", async (req, res) => {
-    const reviews = await Review.find({}).populate("author");
-    let income = null;
-    if (req.user) {
-        const user = await User.findById(req.user._id);
-        income = user.income;
+  //added jsut now
+  app.get("/", async (req, res, next) => {
+    try {
+      const reviews = await Review.find({}).populate("author");
+      let income = null;
+      if (req.user) {
+          const user = await User.findById(req.user._id);
+          
+          // If income is number, wrap it into object or skip it
+          if (typeof user.income === "number") {
+            income = { monthly: user.income }; // or change to 0 or null
+          } else {
+            income = user.income;
+          }
+      }
+      res.render("expenses/home.ejs", { reviews, income });
+    } catch (err) {
+      console.error("Homepage crash:", err);
+      next(err);
     }
-    res.render("expenses/home.ejs", { reviews, income });
-});
-
-app.get("/learn-more", (req, res) => {
-    res.render("learnMore.ejs");
   });
+//old one
+//   app.get("/", async (req, res) => {
+//     const reviews = await Review.find({}).populate("author");
+//     let income = null;
+//     if (req.user) {
+//         const user = await User.findById(req.user._id);
+//         income = user.income;
+//     }
+//     res.render("expenses/home.ejs", { reviews, income });
+// });
+
+
 // This should go at the end, AFTER all other routes
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page not found!"));

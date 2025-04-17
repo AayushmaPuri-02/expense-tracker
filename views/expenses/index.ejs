@@ -71,7 +71,10 @@
     onclick="window.location.href='/set-income'"
     style="cursor: pointer;">
  <h5 class="mb-0">💼 Your Income:</h5>
- <h4 class="mb-0 text-success">₹<%= currUser.income %></h4>
+   <li>Daily: ₹<%= currUser.income?.daily || 0 %></li>
+   <li>Weekly: ₹<%= currUser.income?.weekly || 0 %></li>
+   <li>Monthly: ₹<%= currUser.income?.monthly || 0 %></li>
+ </ul>
 </div>
     <!-- Total Expenses Box -->
     <div class="col-md-4">

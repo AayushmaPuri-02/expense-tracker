@@ -5,15 +5,20 @@
     <h3 class="mb-4">Update Your Income</h3>
     <form method="POST" action="/set-income">
       <div class="mb-3">
-        <label for="income" class="form-label">Monthly Income (₹)</label>
-        <input
-          type="number"
-          name="income"
-          class="form-control"
-          required
-          value="<%= user.income %>"
-        />
+        <label class="form-label">Daily Income (₹)</label>
+        <input type="number" name="income[daily]" class="form-control" value="<%= user.income?.daily || '' %>">
       </div>
+    
+      <div class="mb-3">
+        <label class="form-label">Weekly Income (₹)</label>
+        <input type="number" name="income[weekly]" class="form-control" value="<%= user.income?.weekly || '' %>">
+      </div>
+    
+      <div class="mb-3">
+        <label class="form-label">Monthly Income (₹)</label>
+        <input type="number" name="income[monthly]" class="form-control" value="<%= user.income?.monthly || '' %>">
+      </div>
+    
       <button class="btn btn-success">Save</button>
     </form>
   </div>

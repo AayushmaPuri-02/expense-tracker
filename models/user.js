@@ -8,9 +8,23 @@ const userSchema = new Schema({
         required: true
     },
     income: {
-        type: Number,
-        default: 0
-    },
+        daily: {
+          type: Number,
+          default: 0
+        },
+        weekly: {
+          type: Number,
+          default: 0
+        },
+        monthly: {
+          type: Number,
+          default: 0
+        },
+        addedAt: {
+          type: Date,
+          default: Date.now
+        }
+      },
     resetPasswordToken: String,
     resetPasswordExpires: Date,
     securityQuestion: {

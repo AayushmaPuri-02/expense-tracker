@@ -1,0 +1,31 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container mt-5">
+  <div class="card shadow p-4">
+    <h3 class="mb-4">Add New Income</h3>
+    <form action="/incomes" method="POST">
+      <div class="mb-3">
+        <label for="amount" class="form-label">Amount (₹)</label>
+        <input type="number" name="income[amount]" id="amount" class="form-control" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select name="income[category]" id="category" class="form-select" required>
+          <option value="Salary">Salary</option>
+          <option value="Freelance">Freelance</option>
+          <option value="Gift">Gift</option>
+          <option value="Investment">Investment</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="note" class="form-label">Note (Optional)</label>
+        <textarea name="income[note]" id="note" class="form-control" rows="3"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-success">Add Income</button>
+    </form>
+  </div>
+</div>

@@ -90,13 +90,14 @@
   <% } else { %>
 
     <!-- Logged In User View -->
-     <div class="section-box">
-      <h4>Hello, <%= currUser.username %>!</h4>
+    <div class="section-box">
+      <% if (currUser) { %>
+        <h4>Hello, <%= currUser.username %>!</h4>
+      <% } %>
       <p><strong>Your Income:</strong> ₹<%= income %></p>
       <a href="/set-income" class="btn btn-primary">Update Income</a>
       <a href="/learn-more" class="btn btn-outline-info ms-2">Learn More</a>
     </div> 
-   
 
     <!-- Review Form -->
     <div class="section-box">
@@ -125,40 +126,41 @@
     </div>
   <% } %>
 
-<!-- All Reviews -->
-<div class="section-box">
-  <h3 class="mb-3">What users say:</h3>
+  <!-- All Reviews -->
+  <div class="section-box">
+    <h3 class="mb-3">What users say:</h3>
 
-  <% 
-    let sortedReviews = reviews;
-    if (currUser) {
-      sortedReviews = reviews.sort((a, b) => {
-        const aOwn = a.author && a.author._id.toString() === currUser._id.toString();
-        const bOwn = b.author && b.author._id.toString() === currUser._id.toString();
-        return bOwn - aOwn;
-      });
-    }
-  %>
+    <% 
+      let sortedReviews = reviews;
+      if (currUser) {
+        sortedReviews = reviews.sort((a, b) => {
+          const aOwn = a.author && a.author._id.toString() === currUser._id.toString();
+          const bOwn = b.author && b.author._id.toString() === currUser._id.toString();
+          return bOwn - aOwn;
+        });
+      }
+    %>
 
-  <% for(let review of sortedReviews) { %>
-    <div class="card mb-3">
-      <div class="card-body">
-        <p><%= review.comment %></p>
-        <% if (review.author) { %>
-          <small>By: <%= review.author.username %></small>
-        <% } else { %>
-          <small>By: Anonymous</small>
-        <% } %>
+    <% for(let review of sortedReviews) { %>
+      <div class="card mb-3">
+        <div class="card-body">
+          <p><%= review.comment %></p>
+          <% if (review.author) { %>
+            <small>By: <%= review.author.username %></small>
+          <% } else { %>
+            <small>By: Anonymous</small>
+          <% } %>
 
-        <p class="starability-result" data-rating="<%= review.rating %>"></p>
+          <p class="starability-result" data-rating="<%= review.rating %>"></p>
 
-        <% if(currUser && review.author && currUser._id.equals(review.author._id)) { %>
-          <form action="/reviews/<%= review._id %>?_method=DELETE" method="POST" class="d-inline">
-            <button class="btn btn-sm btn-outline-danger mt-2">Delete</button>
-          </form>
-        <% } %>
+          <% if(currUser && review.author && currUser._id.equals(review.author._id)) { %>
+            <form action="/reviews/<%= review._id %>?_method=DELETE" method="POST" class="d-inline">
+              <button class="btn btn-sm btn-outline-danger mt-2">Delete</button>
+            </form>
+          <% } %>
+        </div>
       </div>
-    </div>
-  <% } %>
-</div>
+    <% } %>
+  </div>
 
+</div>

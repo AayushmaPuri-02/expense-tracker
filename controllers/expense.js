@@ -28,6 +28,8 @@ module.exports.index = async (req, res) => {
     categorySummary
   });
 };
+
+
   module.exports.renderNewForm =  (req, res) => {
     res.render("expenses/new.ejs");
 }
@@ -67,31 +69,6 @@ module.exports.createExpense = async (req, res, next) => {
   res.redirect("/expenses");
 };
 
-// module.exports.createExpense = async (req, res, next) => {
-//     // let imagePath;
-// let url = req.file.path;
-// let filename = req.file.filename;
-//     // If user uploaded an image, use it. Else, use default from category
-//     if (req.file) {
-//       imagePath = "/uploads/" + req.file.filename; // accessible from public folder
-//     } else {
-//       // Fallback: Use default category image (already handled in schema)
-//       imagePath = undefined;
-//     }
-
-//     const expenseData = req.body.expense;
-//     if (imagePath) {
-//       expenseData.image = imagePath;
-//     }
-
-//     const newExpense = new Expense(expenseData);
-//     newExpense.owner = req.user._id;
-//     newExpense.image ={url,filename};
-//     await newExpense.save();
-
-//     req.flash("success", "New expense added in the list");
-//     res.redirect("/expenses");
-//   }
 
   module.exports.renderEditForm = async (req,res)=>{
     let { id } = req.params;

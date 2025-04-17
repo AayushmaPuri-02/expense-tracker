@@ -1,0 +1,45 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container mt-5">
+  <div class="card shadow p-4">
+    <h3 class="mb-4">Edit Income</h3>
+    <form action="/incomes/<%= income._id %>?_method=PUT" method="POST">
+      <div class="mb-3">
+        <label for="amount" class="form-label">Amount (₹)</label>
+        <input
+          type="number"
+          name="income[amount]"
+          id="amount"
+          class="form-control"
+          required
+          value="<%= income.amount %>"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select name="income[category]" id="category" class="form-select">
+          <option value="Salary" <%= income.category === "Salary" ? "selected" : "" %>>Salary</option>
+          <option value="Freelance" <%= income.category === "Freelance" ? "selected" : "" %>>Freelance</option>
+          <option value="Business" <%= income.category === "Business" ? "selected" : "" %>>Business</option>
+          <option value="Gift" <%= income.category === "Gift" ? "selected" : "" %>>Gift</option>
+          <option value="Rental" <%= income.category === "Rental" ? "selected" : "" %>>Rental</option>
+          <option value="Investment" <%= income.category === "Investment" ? "selected" : "" %>>Investment</option>
+          <option value="Other" <%= income.category === "Other" ? "selected" : "" %>>Other</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="note" class="form-label">Note (optional)</label>
+        <textarea
+          name="income[note]"
+          id="note"
+          class="form-control"
+          rows="2"
+        ><%= income.note %></textarea>
+      </div>
+
+      <button class="btn btn-success">Update Income</button>
+    </form>
+  </div>
+</div>

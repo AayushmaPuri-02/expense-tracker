@@ -26,17 +26,12 @@ router.get("/set-income", isLoggedIn, async (req, res) => {
     const user = await User.findById(req.user._id);
     res.render("users/setIncome.ejs", { user });
 });
-
-// Handle income form submission
 router.post("/set-income", isLoggedIn, async (req, res) => {
-    const { income } = req.body;
-    const user = await User.findById(req.user._id);
-    user.income = income;
-    await user.save();
-    req.flash("success", "Income updated successfully!");
-    res.redirect("/expenses"); // or to "/expenses" or anywhere you like
-});
-
+    const { income } = req.body; // income = { daily, weekly, monthly }
   
+    await User.findByIdAndUpdate(req.user._id, { income });
+    req.flash("success", "Income updated!");
+    res.redirect("/expenses");
+  });
  
 module.exports = router;
