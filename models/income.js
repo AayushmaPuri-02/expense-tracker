@@ -11,8 +11,19 @@ const incomeSchema = new Schema({
     type: String,
     required: true
   },
+  sourceDesc: {
+    type: String,
+    required: true
+  },
   note: {
     type: String
+  },
+  receipt: {
+    url: {
+      type: String,
+      default: "https://via.placeholder.com/300x200?text=No+Receipt"
+    },
+    filename: String
   },
   addedAt: {
     type: Date,
