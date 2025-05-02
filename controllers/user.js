@@ -1,5 +1,4 @@
 const User = require("../models/user.js");
-
 const emailExistence = require("email-existence");
 const util = require("util");
 const checkEmail = util.promisify(emailExistence.check);
