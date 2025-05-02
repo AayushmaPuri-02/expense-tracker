@@ -16,6 +16,7 @@ const ExpressError = require("./utils/ExpressError.js")
 const { expenseSchema } = require("./schema");
 const { validateExpense } = require("./middleware/validateExpense");
 const upload = require("./middleware/multer");
+const Income = require("./models/income");
 //routers
 const expenses = require ("./routes/expense.js");
 const userRouter = require("./routes/user.js");
@@ -103,18 +104,30 @@ app.use((err, req, res, next) => {
   app.get("/", async (req, res, next) => {
     try {
       const reviews = await Review.find({}).populate("author");
+  
       let income = null;
+      let totalIncome = 0;
+      let totalExpenses = 0;
+  
       if (req.user) {
-          const user = await User.findById(req.user._id);
-          
-          // If income is number, wrap it into object or skip it
-          if (typeof user.income === "number") {
-            income = { monthly: user.income }; // or change to 0 or null
-          } else {
-            income = user.income;
-          }
+        const user = await User.findById(req.user._id);
+  
+        // Income object (monthly, weekly, daily)
+        if (typeof user.income === "object") {
+          income = user.income;
+        } else if (typeof user.income === "number") {
+          income = { monthly: user.income };
+        }
+  
+        const incomeRecords = await Income.find({ owner: req.user._id });
+        totalIncome = incomeRecords.reduce((sum, inc) => sum + inc.amount, 0);
+  
+        const expenseRecords = await Expense.find({ owner: req.user._id });
+        totalExpenses = expenseRecords.reduce((sum, exp) => sum + exp.amount, 0);
       }
-      res.render("expenses/home.ejs", { reviews, income });
+  
+      res.render("expenses/home.ejs", { reviews, income, totalIncome, totalExpenses });
+  
     } catch (err) {
       console.error("Homepage crash:", err);
       next(err);
