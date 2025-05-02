@@ -3,7 +3,7 @@
 <div class="container mt-5">
   <div class="card shadow p-4">
     <h3 class="mb-4">Edit Income</h3>
-    <form action="/incomes/<%= income._id %>?_method=PUT" method="POST">
+    <form action="/incomes/<%= income._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="amount" class="form-label">Amount (₹)</label>
         <input
@@ -29,6 +29,27 @@
         </select>
       </div>
 
+      <div class="mb-3">
+        <label>Current Receipt:</label>
+        <% if (income.receipt && income.receipt.url) { %>
+          <div>
+            <a href="<%= income.receipt.url %>" target="_blank">View Receipt</a>
+          </div>
+        <% } else { %>
+          <p>No receipt uploaded</p>
+        <% } %>
+      </div>
+    
+      <div class="mb-3">
+        <label for="receipt" class="form-label">Upload New Receipt (optional)</label>
+        <input class="form-control" type="file" name="receipt" id="receipt" accept="image/*">
+      </div>
+      ...
+      <div class="mb-3">
+        <label for="sourceDesc" class="form-label">Income Source Description</label>
+        <textarea name="income[sourceDesc]" id="sourceDesc" class="form-control" required><%= income.sourceDesc %></textarea>
+      </div>
+      
       <div class="mb-3">
         <label for="note" class="form-label">Note (optional)</label>
         <textarea

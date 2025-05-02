@@ -1,0 +1,32 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container my-5">
+  <a href="/expenses" class="btn btn-sm btn-outline-dark mb-3">← Back to All Incomes</a>
+
+  <div class="card shadow p-4">
+    <h3 class="mb-3">Income Details</h3>
+
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>Amount:</strong> ₹<%= income.amount %></li>
+      <li class="list-group-item"><strong>Category:</strong> <%= income.category %></li>
+      <li class="list-group-item"><strong>Description:</strong> <%= income.sourceDesc %></li>
+      <li class="list-group-item"><strong>Note:</strong> <%= income.note || "—" %></li>
+      <li class="list-group-item">
+        <strong>Date:</strong>
+        <%= income.addedAt ? income.addedAt.toDateString() : "—" %>
+      </li>
+      <% if (income.receipt && income.receipt.url) { %>
+        <li class="list-group-item">
+          <strong>Receipt:</strong> <a href="<%= income.receipt.url %>" target="_blank">View</a>
+        </li>
+      <% } %>
+    </ul>
+
+    <div class="mt-3 d-flex gap-2">
+      <a href="/incomes/<%= income._id %>/edit" class="btn btn-primary">Edit</a>
+      <form action="/incomes/<%= income._id %>?_method=DELETE" method="POST">
+        <button class="btn btn-danger">Delete</button>
+      </form>
+    </div>
+  </div>
+</div>

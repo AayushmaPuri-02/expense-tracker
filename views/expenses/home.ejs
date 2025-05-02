@@ -57,7 +57,7 @@
         </div>
       </div>
     </div>
-
+ 
     <!-- Features Section -->
     <div class="section-box">
       <h2 class="fw-bold mb-4 text-center">Track, Manage, and Grow Your Finances</h2>
@@ -89,15 +89,17 @@
     </div>
   <% } else { %>
 
-    <!-- Logged In User View -->
-    <div class="section-box">
-      <% if (currUser) { %>
-        <h4>Hello, <%= currUser.username %>!</h4>
-      <% } %>
-      <p><strong>Your Income:</strong> ₹<%= income %></p>
-      <a href="/set-income" class="btn btn-primary">Update Income</a>
-      <a href="/learn-more" class="btn btn-outline-info ms-2">Learn More</a>
-    </div> 
+    <div class="container">
+      <!-- alert box here -->
+        <!-- Logged In User View -->
+    <div class="alert alert-success text-center shadow-sm mt-4 py-4 px-3">
+      <h3 class="mb-3">Hello, <%= currUser.username %>!</h3>
+      <p class="lead">
+        You've earned <strong>₹<%= totalIncome %></strong> and spent <strong>₹<%= totalExpenses %></strong> so far.
+      </p>
+    </div>
+    </div>
+   
 
     <!-- Review Form -->
     <div class="section-box">

@@ -63,19 +63,45 @@
 <div class="container my-5">
   <!-- Summary Row -->
   <div class="row g-3 justify-content-center mb-4">
-
-    <div class="alert alert-success d-flex justify-content-between align-items-center shadow-sm"
-    data-bs-toggle="tooltip"
-    data-bs-placement="top"
-    title="Click to update your income"
-    onclick="window.location.href='/set-income'"
-    style="cursor: pointer;">
- <h5 class="mb-0">💼 Your Income:</h5>
-   <li>Daily: ₹<%= currUser.income?.daily || 0 %></li>
-   <li>Weekly: ₹<%= currUser.income?.weekly || 0 %></li>
-   <li>Monthly: ₹<%= currUser.income?.monthly || 0 %></li>
- </ul>
+    <!-- <div class="alert alert-success d-flex justify-content-between align-items-center shadow-sm summary-box"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      title="Click to update your income"
+      onclick="window.location.href='/incomes/new'"
+      style="cursor: pointer;">
+      <h5 class="mb-0">💼 Your Income:</h5>
+      <li>Daily: ₹<%= currUser.income?.daily || 0 %></li>
+      <li>Weekly: ₹<%= currUser.income?.weekly || 0 %></li>
+      <li>Monthly: ₹<%= currUser.income?.monthly || 0 %></li>
+    </div> -->
+<!-- Income Records Below -->
+<div class="mt-5">
+  <h4>Your Income Records</h4>
+  <% if (incomes.length === 0) { %>
+    <p>No income entries yet.</p>
+  <% } else { %>
+    <table class="table table-bordered table-striped shadow-sm">
+      <thead>
+        <tr>
+          <th>Amount</th>
+          <th>Category</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% incomes.forEach(income => { %>
+          <tr onclick="window.location.href='/incomes/<%= income._id %>'" style="cursor: pointer;">
+            <td>₹<%= income.amount %></td>
+            <td><%= income.category %></td>
+            <td><%= income.sourceDesc %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
 </div>
+</div>
+
     <!-- Total Expenses Box -->
     <div class="col-md-4">
       <div class="alert alert-info d-flex justify-content-between align-items-center shadow-sm summary-box">
@@ -108,13 +134,13 @@
       </div>
     </div>
   </div>
-</div>
 
+  
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-const categorySummary = JSON.parse('<%- JSON.stringify(categorySummary || {}) %>');
+  const categorySummary = JSON.parse('<%- JSON.stringify(categorySummary || {}) %>');
   const labels = Object.keys(categorySummary);
   const data = Object.values(categorySummary);
 
@@ -145,6 +171,8 @@ const categorySummary = JSON.parse('<%- JSON.stringify(categorySummary || {}) %>
     }
   });
 </script>
+
+<!-- Bootstrap Tooltip Init -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

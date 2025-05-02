@@ -15,7 +15,9 @@
         <tr>
           <th>Amount (₹)</th>
           <th>Category</th>
+          <th>Description</th>
           <th>Note</th>
+          <th>Receipt</th>
           <th>Date</th>
           <th style="width: 150px;">Actions</th>
         </tr>
@@ -25,8 +27,16 @@
           <tr>
             <td><%= income.amount %></td>
             <td><%= income.category %></td>
+            <td><%= income.sourceDesc %></td>
             <td><%= income.note || "—" %></td>
-            <td><%= income.createdAt.toDateString() %></td>
+            <td>
+              <% if (income.receipt && income.receipt.url) { %>
+                <a href="<%= income.receipt.url %>" target="_blank">View</a>
+              <% } else { %>
+                —
+              <% } %>
+            </td>
+            <td><%= income.addedAt ? income.addedAt.toDateString() : "—" %></td>
             <td>
               <a href="/incomes/<%= income._id %>/edit" class="btn btn-sm btn-outline-primary me-1">Edit</a>
               <form action="/incomes/<%= income._id %>?_method=DELETE" method="POST" class="d-inline">

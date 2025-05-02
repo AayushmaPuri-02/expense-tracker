@@ -3,29 +3,78 @@
 <div class="container mt-5">
   <div class="card shadow p-4">
     <h3 class="mb-4">Add New Income</h3>
-    <form action="/incomes" method="POST">
+
+    <form action="/incomes" method="POST" enctype="multipart/form-data">
+      
+      <!-- Amount -->
       <div class="mb-3">
         <label for="amount" class="form-label">Amount (₹)</label>
-        <input type="number" name="income[amount]" id="amount" class="form-control" required />
+        <input
+          type="number"
+          name="income[amount]"
+          id="amount"
+          class="form-control"
+          required
+          placeholder="Enter income amount"
+        />
       </div>
 
+      <!-- Category -->
       <div class="mb-3">
         <label for="category" class="form-label">Category</label>
         <select name="income[category]" id="category" class="form-select" required>
+          <option value="" disabled selected>Select category</option>
           <option value="Salary">Salary</option>
           <option value="Freelance">Freelance</option>
+          <option value="Business">Business</option>
+          <option value="Rental">Rental</option>
           <option value="Gift">Gift</option>
           <option value="Investment">Investment</option>
           <option value="Other">Other</option>
         </select>
       </div>
 
+      <!-- Source Description -->
       <div class="mb-3">
-        <label for="note" class="form-label">Note (Optional)</label>
-        <textarea name="income[note]" id="note" class="form-control" rows="3"></textarea>
+        <label for="sourceDesc" class="form-label">Income Source Description</label>
+        <textarea
+          name="income[sourceDesc]"
+          id="sourceDesc"
+          class="form-control"
+          rows="2"
+          required
+          placeholder="E.g. freelance writing for client, rent from flat, etc."
+        ></textarea>
       </div>
 
-      <button type="submit" class="btn btn-success">Add Income</button>
+      <!-- Note (optional) -->
+      <div class="mb-3">
+        <label for="note" class="form-label">Note (optional)</label>
+        <textarea
+          name="income[note]"
+          id="note"
+          class="form-control"
+          rows="3"
+          placeholder="Any additional notes..."
+        ></textarea>
+      </div>
+
+      <!-- Receipt Upload -->
+      <div class="mb-3">
+        <label for="receipt" class="form-label">Upload Receipt (optional)</label>
+        <input
+          class="form-control"
+          type="file"
+          name="receipt"
+          id="receipt"
+          accept="image/*"
+        />
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-success w-100">
+        <i class="fa-solid fa-plus me-1"></i> Add Income
+      </button>
     </form>
   </div>
 </div>
