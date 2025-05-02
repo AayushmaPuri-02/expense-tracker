@@ -1,0 +1,24 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container my-5">
+  <h2 class="mb-4">Set a New Saving Goal</h2>
+  <form action="/saving" method="POST">
+    <div class="mb-3">
+      <label for="goalAmount" class="form-label">Target Amount (₹)</label>
+      <input type="number" id="amount" name="saving[goalAmount]" class="form-control" required min="0">
+    </div>
+
+    <div class="mb-3">
+      <label for="goalReason" class="form-label">Reason</label>
+      <input type="text" class="form-control" name="saving[goalReason]" placeholder="e.g., Buy a laptop" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="targetDate" class="form-label">Target Date</label>
+      <input type="date" class="form-control" name="saving[targetDate]" required>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save Goal</button>
+    <a href="/saving" class="btn btn-secondary ms-2">Cancel</a>
+  </form>
+</div>

@@ -1,0 +1,45 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container mt-5">
+  <h3 class="mb-4">✏️ Edit Saving Goal</h3>
+  <form method="POST" action="/saving/<%= savingGoal._id %>?_method=PUT">
+    <div class="mb-3">
+      <label for="amount" class="form-label">Target Amount (₹)</label>
+      <input
+        type="number"
+        id="amount"
+        name="saving[goalAmount]"
+        class="form-control"
+        required
+        value="<%= savingGoal.goalAmount || '' %>"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="reason" class="form-label">Reason</label>
+      <input
+        type="text"
+        id="reason"
+        name="saving[goalReason]"
+        class="form-control"
+        value="<%= savingGoal.goalReason || '' %>"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="date" class="form-label">Target Date</label>
+      <input
+        type="date"
+        id="date"
+        name="saving[targetDate]"
+        class="form-control"
+        value="<%= savingGoal.targetDate.toISOString().split('T')[0] %>"
+      />
+    </div>
+
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-success">Update Goal</button>
+      <a href="/saving" class="btn btn-secondary">Back</a>
+    </div>
+  </form>
+</div>

@@ -82,6 +82,9 @@ app.use((req, res, next) => {
 const reviewRoutes = require("./routes/review")
 app.use("/reviews", reviewRoutes);
 
+//saving
+const savingRoutes = require("./routes/saving");
+app.use("/saving", savingRoutes);
 
 app.use("/expenses", expenses);
 app.use("/", userRouter);

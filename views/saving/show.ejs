@@ -1,0 +1,23 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container mt-5">
+  <h3 class="mb-4">🎯 Your Saving Goal</h3>
+
+  <% if (!savingGoal || !savingGoal.goalAmount) { %>
+    <p>You have not set a saving goal yet.</p>
+    <a href="/saving/new" class="btn btn-success">Set Saving Goal</a>
+  <% } else { %>
+    <ul class="list-group mb-3">
+      <li class="list-group-item"><strong>Amount:</strong> ₹<%= savingGoal.goalAmount %></li>
+      <li class="list-group-item"><strong>Reason:</strong> <%= savingGoal.goalReason %></li>
+      <li class="list-group-item"><strong>Target Date:</strong> <%= savingGoal.targetDate.toDateString() %></li>
+    </ul>
+
+    <div class="d-flex gap-3">
+      <a href="/saving/<%= savingGoal._id %>/edit" class="btn btn-primary">Edit</a>
+      <form method="POST" action="/saving/<%= savingGoal._id %>?_method=DELETE">
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+    </div>
+  <% } %>
+</div>
