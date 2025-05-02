@@ -1,5 +1,6 @@
 // routes/income.js
 const express = require("express");
+const Papa = require("papaparse");
 const router = express.Router();
 const Income = require("../models/income");
 const Expense = require("../models/expense");
@@ -48,6 +49,30 @@ router.get("/:id/edit", isLoggedIn, wrapAsync(async (req, res) => {
   res.render("income/edit", { income });
 }));
 
+// Download income records as CSV
+// Download income records as CSV
+router.get("/download", isLoggedIn, wrapAsync(async (req, res) => {
+  const incomes = await Income.find({ owner: req.user._id }).lean();
+
+  // Map and format data to include receipt URL safely
+  const csvData = incomes.map(income => ({
+    amount: income.amount,
+    category: income.category,
+    sourceDesc: income.sourceDesc,
+    note: income.note,
+    addedAt: income.addedAt,
+    receiptUrl: income.receipt?.url || "—"
+  }));
+
+  const csv = Papa.unparse(csvData, {
+    columns: ["amount", "category", "sourceDesc", "note", "addedAt", "receiptUrl"]
+  });
+
+  res.header("Content-Type", "text/csv");
+  res.attachment("income-records.csv");
+  res.send(csv);
+}));
+
 // Update income
 router.put("/:id", isLoggedIn, upload.single("receipt"), wrapAsync(async (req, res) => {
   const { amount, category, note, sourceDesc } = req.body.income;
@@ -87,5 +112,6 @@ router.delete("/:id", isLoggedIn, wrapAsync(async (req, res) => {
   req.flash("success", "Income deleted!");
   res.redirect("/expenses");
 }));
+
 
 module.exports = router;

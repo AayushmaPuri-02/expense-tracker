@@ -75,6 +75,9 @@
       <li>Monthly: ₹<%= currUser.income?.monthly || 0 %></li>
     </div> -->
 <!-- Income Records Below -->
+<a href="/incomes/download" class="btn btn-outline-success mb-3">
+  <i class="fa-solid fa-download me-1"></i> Download Income CSV
+</a>
 <div class="mt-5">
   <h4>Your Income Records</h4>
   <% if (incomes.length === 0) { %>
