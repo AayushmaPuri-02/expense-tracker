@@ -24,16 +24,21 @@ module.exports.createLoan = async (req, res) => {
       notes
     } = req.body.loan;
   
+    // Convert string to number
+    const amountNum = parseFloat(amount);
+    const interestRateNum = parseFloat(interestRate);
+  
     const start = new Date(startDate);
     const due = new Date(dueDate);
     const durationDays = Math.ceil((due - start) / (1000 * 60 * 60 * 24));
-    const interest = (amount * interestRate * durationDays) / (100 * 365);
-    const totalRepayable = amount + interest;
+  
+    const interest = parseFloat(((amountNum * interestRateNum * durationDays) / (100 * 365)).toFixed(2));
+    const totalRepayable = parseFloat((amountNum + interest).toFixed(2));
   
     const loan = new Loan({
       type,
-      amount,
-      interestRate,
+      amount: amountNum,
+      interestRate: interestRateNum,
       startDate: start,
       dueDate: due,
       totalInterest: interest,
@@ -44,11 +49,11 @@ module.exports.createLoan = async (req, res) => {
     });
   
     if (req.file) {
-        console.log("File uploaded:", req.file);
+      console.log("File uploaded:", req.file);
       loan.document = {
         url: req.file.path,
         filename: req.file.filename,
-        mimetype: req.file.mimetype  
+        mimetype: req.file.mimetype
       };
     }
   
@@ -59,14 +64,22 @@ module.exports.createLoan = async (req, res) => {
   
 // Show a specific loan
 module.exports.showLoan = async (req, res) => {
-  const loan = await Loan.findOne({ _id: req.params.id, owner: req.user._id });
-  if (!loan) {
-    req.flash("error", "Loan not found.");
-    return res.redirect("/loan");
-  }
-  res.render("loan/show", { loan });
-};
-
+    const loan = await Loan.findOne({ _id: req.params.id, owner: req.user._id });
+    if (!loan) {
+      req.flash("error", "Loan not found.");
+      return res.redirect("/loan");
+    }
+  
+    const durationDays = Math.ceil(
+      (loan.dueDate - loan.startDate) / (1000 * 60 * 60 * 24)
+    );
+  
+    const monthlyInterest = parseFloat(
+      (loan.totalInterest / (durationDays / 30)).toFixed(2)
+    );
+  
+    res.render("loan/show", { loan, durationDays, monthlyInterest }); // ⬅️ pass both
+  };
 // Render edit form
 module.exports.renderEditForm = async (req, res) => {
   const loan = await Loan.findOne({ _id: req.params.id, owner: req.user._id });
@@ -92,11 +105,15 @@ module.exports.updateLoan = async (req, res) => {
       status
     } = req.body.loan;
   
+    const amountNum = parseFloat(amount);
+    const interestRateNum = parseFloat(interestRate);
+  
     const start = new Date(startDate);
     const due = new Date(dueDate);
     const durationDays = Math.ceil((due - start) / (1000 * 60 * 60 * 24));
-    const interest = (amount * interestRate * durationDays) / (100 * 365);
-    const totalRepayable = amount + interest;
+  
+    const interest = parseFloat(((amountNum * interestRateNum * durationDays) / (100 * 365)).toFixed(2));
+    const totalRepayable = parseFloat((amountNum + interest).toFixed(2));
   
     const loan = await Loan.findOne({ _id: id, owner: req.user._id });
     if (!loan) {
@@ -105,8 +122,8 @@ module.exports.updateLoan = async (req, res) => {
     }
   
     loan.type = type;
-    loan.amount = amount;
-    loan.interestRate = interestRate;
+    loan.amount = amountNum;
+    loan.interestRate = interestRateNum;
     loan.startDate = start;
     loan.dueDate = due;
     loan.totalInterest = interest;
@@ -116,11 +133,11 @@ module.exports.updateLoan = async (req, res) => {
     loan.status = status;
   
     if (req.file) {
-        console.log("File uploaded:", req.file);
+      console.log("File uploaded:", req.file);
       loan.document = {
         url: req.file.path,
         filename: req.file.filename,
-        mimetype: req.file.mimetype  
+        mimetype: req.file.mimetype
       };
     }
   

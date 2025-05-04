@@ -7,11 +7,20 @@
     <li class="list-group-item"><strong>Type:</strong> <%= loan.type === "lent" ? "Lent (You gave loan)" : "Borrowed (You took loan)" %></li>
     <li class="list-group-item"><strong>Person/Institution:</strong> <%= loan.party %></li>
     <li class="list-group-item"><strong>Amount:</strong> ₹<%= loan.amount %></li>
-    <li class="list-group-item"><strong>Interest Rate:</strong> <%= loan.interestRate %>%</li>
+    <li class="list-group-item"><strong>Interest Rate (% per annum):</strong> <%= loan.interestRate %>%</li>
     <li class="list-group-item"><strong>Start Date:</strong> <%= loan.startDate.toDateString() %></li>
     <li class="list-group-item"><strong>Due Date:</strong> <%= loan.dueDate.toDateString() %></li>
-    <li class="list-group-item"><strong>Total Interest:</strong> ₹<%= loan.totalInterest %></li>
-    <li class="list-group-item"><strong>Total Repayable:</strong> ₹<%= loan.totalRepayable %></li>
+    <li class="list-group-item">
+      <strong>Total Interest:</strong> ₹<%= loan.totalInterest %>
+      <span class="text-muted">(for <%= durationDays %> days at <%= loan.interestRate %>%)</span>
+    </li>
+    <li class="list-group-item">
+      <strong>Monthly Interest (approx):</strong> ₹<%= monthlyInterest %>
+    </li>
+    
+    <li class="list-group-item">
+      <strong>Total Repayable:</strong> ₹<%= loan.totalRepayable %>
+    </li>
     <li class="list-group-item"><strong>Status:</strong> <%= loan.status %></li>
     <% if (loan.notes) { %>
       <li class="list-group-item"><strong>Note:</strong> <%= loan.notes %></li>
