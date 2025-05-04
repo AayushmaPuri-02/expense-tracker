@@ -4,17 +4,28 @@ const router = express.Router();
 const SavingGoal = require("../models/savingGoal");
 const { isLoggedIn } = require("../middleware/isLoggedIn");
 const wrapAsync = require("../utils/wrapAsync");
+const Expense = require("../models/expense");
+const Income = require("../models/income");
 
 // View all saving goals
+// View all saving goals
+
 router.get("/", isLoggedIn, wrapAsync(async (req, res) => {
     const savingGoals = await SavingGoal.find({ owner: req.user._id });
-    res.render("saving/index", { savings: savingGoals }); // 👈 Fixed variable name
+    const incomes = await Income.find({ owner: req.user._id });
+    const expenses = await Expense.find({ owner: req.user._id });
+  
+    const totalIncome = incomes.reduce((sum, i) => sum + i.amount, 0);
+    const totalExpense = expenses.reduce((sum, e) => sum + e.amount, 0);
+    const totalSavings = totalIncome - totalExpense;
+    const totalTarget = savingGoals.reduce((sum, g) => sum + g.goalAmount, 0);
+  
+    res.render("saving/index", {
+      savings: savingGoals,
+      totalSavings,
+      totalTarget
+    });
   }));
-
-// Form to add new saving goal
-router.get("/new", isLoggedIn, (req, res) => {
-  res.render("saving/new");
-});
 
 // Create saving goal
 router.post("/", isLoggedIn, wrapAsync(async (req, res) => {
@@ -30,6 +41,10 @@ router.post("/", isLoggedIn, wrapAsync(async (req, res) => {
   res.redirect("/saving");
 }));
 
+router.get("/new", isLoggedIn, (req, res) => {
+  res.render("saving/new");
+});
+
 // Show single saving goal
 router.get("/:id", isLoggedIn, wrapAsync(async (req, res) => {
   const goal = await SavingGoal.findOne({ _id: req.params.id, owner: req.user._id });
@@ -39,6 +54,9 @@ router.get("/:id", isLoggedIn, wrapAsync(async (req, res) => {
   }
   res.render("saving/show", { savingGoal: goal });
 }));
+
+
+
 
 // Edit form
 router.get("/:id/edit", isLoggedIn, wrapAsync(async (req, res) => {

@@ -1,0 +1,37 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container mt-5">
+  <h2 class="mb-4">📄 Loan Details</h2>
+
+  <ul class="list-group mb-3">
+    <li class="list-group-item"><strong>Type:</strong> <%= loan.type === "lent" ? "Lent (You gave loan)" : "Borrowed (You took loan)" %></li>
+    <li class="list-group-item"><strong>Person/Institution:</strong> <%= loan.party %></li>
+    <li class="list-group-item"><strong>Amount:</strong> ₹<%= loan.amount %></li>
+    <li class="list-group-item"><strong>Interest Rate:</strong> <%= loan.interestRate %>%</li>
+    <li class="list-group-item"><strong>Start Date:</strong> <%= loan.startDate.toDateString() %></li>
+    <li class="list-group-item"><strong>Due Date:</strong> <%= loan.dueDate.toDateString() %></li>
+    <li class="list-group-item"><strong>Total Interest:</strong> ₹<%= loan.totalInterest %></li>
+    <li class="list-group-item"><strong>Total Repayable:</strong> ₹<%= loan.totalRepayable %></li>
+    <li class="list-group-item"><strong>Status:</strong> <%= loan.status %></li>
+    <% if (loan.notes) { %>
+      <li class="list-group-item"><strong>Note:</strong> <%= loan.notes %></li>
+    <% } %>
+  </ul>
+
+  <% if (loan.document && loan.document.url) { %>
+    <p><strong>Document:</strong></p>
+  
+    <% if (loan.document.mimetype === 'application/pdf') { %>
+      <a href="<%= loan.document.url %>" target="_blank" rel="noopener" class="btn btn-outline-primary">
+        📄 View / Download PDF
+      </a>
+    <% } else { %>
+      <img src="<%= loan.document.url %>" alt="Loan Document" class="img-fluid rounded shadow mt-2" style="max-height: 400px;" />
+    <% } %>
+  <% } %>
+  <a href="/loan/<%= loan._id %>/edit" class="btn btn-primary me-2">Edit</a>
+  <form action="/loan/<%= loan._id %>?_method=DELETE" method="POST" class="d-inline">
+    <button class="btn btn-danger">Delete</button>
+  </form>
+  <a href="/loan" class="btn btn-secondary ms-2">Back to All Loans</a>
+</div>

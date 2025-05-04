@@ -1,7 +1,7 @@
 <% layout("layouts/boilerplate") %>
 
 <div class="container my-5">
-  <h2>Your Saving Goals</h2>
+  <h2 class="mb-4">Your Saving Goals</h2>
 
   <% if (savings.length === 0) { %>
     <p>You have not added any saving goals yet.</p>
@@ -11,7 +11,8 @@
       <% savings.forEach(goal => { %>
         <li class="list-group-item d-flex justify-content-between align-items-center">
           <div>
-            <strong>Target:</strong> ₹<%= goal.amount %> by <%= goal.targetDate.toDateString() %>
+            <strong>Target:</strong> ₹<%= goal.goalAmount %> by <%= new Date(goal.targetDate).toDateString() %><br/>
+            <strong>Reason:</strong> <%= goal.goalReason %>
           </div>
           <div>
             <a href="/saving/<%= goal._id %>" class="btn btn-sm btn-outline-info">View</a>
@@ -23,6 +24,54 @@
         </li>
       <% }) %>
     </ul>
-    <a href="/saving/new" class="btn btn-success mt-3">+ Add Another Goal</a>
+
+    <a href="/saving/new" class="btn btn-success mt-4">+ Add Another Goal</a>
+
+    <div class="card mt-5 p-3 shadow">
+      <h5 class="mb-3 text-center">📊 Saving Goal vs Current Savings</h5>
+      <canvas id="summaryChart" width="400" height="200"></canvas>
+    </div>
   <% } %>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const totalTarget = <%= totalTarget %>;
+  const totalSavings = <%= totalSavings %>;
+
+  new Chart(document.getElementById('summaryChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: ['Total Goal', 'Current Savings'],
+      datasets: [{
+        label: 'Amount (₹)',
+        data: [totalTarget, totalSavings],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.7)',
+          'rgba(54, 162, 235, 0.7)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)'
+        ],
+        borderWidth: 1,
+        maxBarThickness: 130 
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: '💰 Saving Overview: Goal vs Actual'
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>

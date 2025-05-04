@@ -1,0 +1,32 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container my-5">
+  <h2 class="mb-4">💸 Your Loan Records</h2>
+
+  <% if (loans.length === 0) { %>
+    <p>No loans added yet.</p>
+    <a href="/loan/new" class="btn btn-primary">+ Add Loan</a>
+  <% } else { %>
+    <ul class="list-group mb-4">
+      <% loans.forEach(loan => { %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>Type:</strong> <%= loan.type %> | 
+            <strong>Amount:</strong> ₹<%= loan.amount %> | 
+            <strong>Interest:</strong> <%= loan.interestRate %>% 
+            <br/>
+            <strong>From/To:</strong> <%= loan.person %>
+          </div>
+          <div>
+            <a href="/loan/<%= loan._id %>" class="btn btn-sm btn-outline-info">View</a>
+            <a href="/loan/<%= loan._id %>/edit" class="btn btn-sm btn-outline-secondary">Edit</a>
+            <form action="/loan/<%= loan._id %>?_method=DELETE" method="POST" class="d-inline">
+              <button class="btn btn-sm btn-outline-danger">Delete</button>
+            </form>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+    <a href="/loan/new" class="btn btn-success">+ Add Another Loan</a>
+  <% } %>
+</div>

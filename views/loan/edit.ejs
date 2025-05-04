@@ -1,0 +1,65 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container mt-5">
+  <h2 class="mb-4">✏️ Edit Loan</h2>
+
+  <form action="/loan/<%= loan._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label class="form-label">Loan Type</label>
+      <select name="loan[type]" class="form-control" required>
+        <option value="lent" <%= loan.type === "lent" ? "selected" : "" %>>Lent (You gave loan)</option>
+        <option value="borrowed" <%= loan.type === "borrowed" ? "selected" : "" %>>Borrowed (You took loan)</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Person/Institution</label>
+      <input type="text" name="loan[party]" class="form-control" required value="<%= loan.party %>">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Amount (₹)</label>
+      <input type="number" name="loan[amount]" class="form-control" required min="0" value="<%= loan.amount %>">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Interest Rate (%)</label>
+      <input type="number" name="loan[interestRate]" class="form-control" required min="0" value="<%= loan.interestRate %>">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Start Date</label>
+      <input type="date" name="loan[startDate]" class="form-control" required value="<%= loan.startDate.toISOString().split('T')[0] %>">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Due Date</label>
+      <input type="date" name="loan[dueDate]" class="form-control" required value="<%= loan.dueDate.toISOString().split('T')[0] %>">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Note</label>
+      <textarea name="loan[notes]" class="form-control"><%= loan.notes %></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Status</label>
+      <select name="loan[status]" class="form-control">
+        <option value="unpaid" <%= loan.status === "unpaid" ? "selected" : "" %>>Unpaid</option>
+        <option value="paid" <%= loan.status === "paid" ? "selected" : "" %>>Paid</option>
+      </select>
+    </div>
+
+    div class="mb-3">
+    <label class="form-label">Upload New Document (optional)</label>
+    <input type="file" name="document" class="form-control">
+  </div>
+
+  <% if (loan.document && loan.document.url) { %>
+    <p>Existing Document: <a href="<%= loan.document.url %>" target="_blank">View</a></p>
+  <% } %>
+
+    <button class="btn btn-success">Update Loan</button>
+    <a href="/loan/<%= loan._id %>" class="btn btn-secondary ms-2">Cancel</a>
+  </form>
+</div>

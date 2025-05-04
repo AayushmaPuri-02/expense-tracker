@@ -1,0 +1,51 @@
+<% layout("layouts/boilerplate") %>
+
+<form action="/loan" method="POST" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label for="type" class="form-label">Loan Type</label>
+    <select name="loan[type]" class="form-control" required>
+      <option value="">-- Select Type --</option>
+      <option value="lent">Lent (You gave loan)</option>
+      <option value="borrowed">Borrowed (You took loan)</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="party" class="form-label">Person/Institution</label>
+    <input type="text" name="loan[party]" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="amount" class="form-label">Amount (₹)</label>
+    <input type="number" name="loan[amount]" class="form-control" required min="0">
+  </div>
+
+  <div class="mb-3">
+    <label for="interestRate" class="form-label">Interest Rate (%)</label>
+    <input type="number" name="loan[interestRate]" class="form-control" required min="0">
+  </div>
+
+  <div class="mb-3">
+    <label for="startDate" class="form-label">Start Date</label>
+    <input type="date" name="loan[startDate]" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="dueDate" class="form-label">Due Date</label>
+    <input type="date" name="loan[dueDate]" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="note" class="form-label">Note</label>
+    <textarea name="loan[notes]" class="form-control"></textarea>
+  </div>
+
+
+  <div class="mb-3">
+    <label class="form-label">Upload Document (PDF/Image)</label>
+    <input type="file" name="document" class="form-control" accept=".pdf,image/*">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Save Loan</button>
+  <a href="/loan" class="btn btn-secondary">Cancel</a>
+</form>

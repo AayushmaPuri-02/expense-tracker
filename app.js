@@ -17,6 +17,7 @@ const { expenseSchema } = require("./schema");
 const { validateExpense } = require("./middleware/validateExpense");
 const upload = require("./middleware/multer");
 const Income = require("./models/income");
+const loanRoutes = require("./routes/loan");
 //routers
 const expenses = require ("./routes/expense.js");
 const userRouter = require("./routes/user.js");
@@ -78,6 +79,8 @@ app.use((req, res, next) => {
     res.locals.currUser = req.user;
     next();
   });
+
+  app.use("/loan", loanRoutes);
 //review
 const reviewRoutes = require("./routes/review")
 app.use("/reviews", reviewRoutes);
@@ -95,13 +98,14 @@ const passwordResetRoutes = require("./routes/passwordReset");
 app.use("/", passwordResetRoutes);
 
 app.use((err, req, res, next) => {
-    if (err.code === "LIMIT_FILE_SIZE") {
-      req.flash("error", "File too large! Please upload an image under 2MB.");
-      return res.redirect("/expenses/new");
-    }
-    let { statusCode = 500, message = "Something went wrong" } = err;
-    res.status(statusCode).render("error.ejs", { message });
-  });
+  if (err.code === "LIMIT_FILE_SIZE") {
+    req.flash("error", "File too large! Please upload a file under 2MB.");
+    return res.redirect("back"); // ✅ redirects to the page the user came from
+  }
+
+  let { statusCode = 500, message = "Something went wrong" } = err;
+  res.status(statusCode).render("error.ejs", { message });
+});
 
   //added jsut now
   app.get("/", async (req, res, next) => {
