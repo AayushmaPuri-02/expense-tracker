@@ -2,7 +2,7 @@
 
 <div class="container mt-5" style="max-width: 500px;">
   <h2 class="mb-3">Reset Password</h2>
-  <form action="/reset-password" method="POST">
+  <form action="/reset/<%= token %>" method="POST">
     <div class="form-group mb-3">
       <label>New Password</label>
       <input type="password" class="form-control" name="password" required>

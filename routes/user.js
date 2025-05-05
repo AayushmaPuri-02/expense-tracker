@@ -21,17 +21,5 @@ router.route("/login")
 //logout
 router.get("/logout", userController.logout)
 
-// Show income input form
-// router.get("/set-income", isLoggedIn, async (req, res) => {
-//     const user = await User.findById(req.user._id);
-//     res.render("users/setIncome.ejs", { user });
-// });
-// router.post("/set-income", isLoggedIn, async (req, res) => {
-//     const { income } = req.body; // income = { daily, weekly, monthly }
-  
-//     await User.findByIdAndUpdate(req.user._id, { income });
-//     req.flash("success", "Income updated!");
-//     res.redirect("/expenses");
-//   });
  
 module.exports = router;
