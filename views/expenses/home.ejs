@@ -90,14 +90,32 @@
   <% } else { %>
 
     <div class="container">
-      <!-- alert box here -->
-        <!-- Logged In User View -->
-    <div class="alert alert-success text-center shadow-sm mt-4 py-4 px-3">
-      <h3 class="mb-3">Hello, <%= currUser.username %>!</h3>
-      <p class="lead">
-        You've earned <strong>₹<%= totalIncome %></strong> and spent <strong>₹<%= totalExpenses %></strong> so far.
-      </p>
-    </div>
+      <div class="alert alert-success text-center shadow-sm mt-4 py-4 px-3">
+        <h3 class="mb-3">Hello, <%= currUser.username %>!</h3>
+        <p>Here's your financial summary:</p>
+    
+        <ul class="list-group mb-4">
+          <li class="list-group-item">💼 Total Income: ₹<%= totalIncome %></li>
+          <li class="list-group-item">🧾 Total Expenses: ₹<%= totalExpenses %></li>
+          <li class="list-group-item">📊 Net Saving: ₹<%= netSaving %></li>
+          <li class="list-group-item">💸 Money Lent: ₹<%= totalLent %></li>
+          <li class="list-group-item">🤝 Money Borrowed: ₹<%= totalBorrowed %></li>
+    
+          <% if (totalSavingGoal > 0) { %>
+            <li class="list-group-item">
+              📈 Saving Progress: ₹<%= netSaving %> / ₹<%= totalSavingGoal %> 
+              (<%= ((netSaving / totalSavingGoal) * 100).toFixed(0) %>%)
+            </li>
+          <% } %>
+    
+          <% if (upcomingLoan) { %>
+            <li class="list-group-item">
+              🔔 Upcoming Loan Due: ₹<%= upcomingLoan.totalRepayable %> by 
+              <%= new Date(upcomingLoan.dueDate).toDateString() %>
+            </li>
+          <% } %>
+        </ul>
+      </div>
     </div>
    
 

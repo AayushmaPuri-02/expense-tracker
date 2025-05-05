@@ -18,6 +18,7 @@ const { validateExpense } = require("./middleware/validateExpense");
 const upload = require("./middleware/multer");
 const Income = require("./models/income");
 const loanRoutes = require("./routes/loan");
+
 //routers
 const expenses = require ("./routes/expense.js");
 const userRouter = require("./routes/user.js");
@@ -115,25 +116,57 @@ app.use((err, req, res, next) => {
       let income = null;
       let totalIncome = 0;
       let totalExpenses = 0;
+      let totalSavingGoal = 0;
+      let totalLent = 0;
+      let totalBorrowed = 0;
+      let netSaving = 0;
+      let upcomingLoan = null;
   
       if (req.user) {
         const user = await User.findById(req.user._id);
   
-        // Income object (monthly, weekly, daily)
         if (typeof user.income === "object") {
           income = user.income;
         } else if (typeof user.income === "number") {
           income = { monthly: user.income };
         }
   
-        const incomeRecords = await Income.find({ owner: req.user._id });
-        totalIncome = incomeRecords.reduce((sum, inc) => sum + inc.amount, 0);
+        const Income = require("./models/income");
+        const Expense = require("./models/expense");
+        const SavingGoal = require("./models/savingGoal");
+        const Loan = require("./models/loan");
   
+        const incomeRecords = await Income.find({ owner: req.user._id });
         const expenseRecords = await Expense.find({ owner: req.user._id });
+        const savingGoals = await SavingGoal.find({ owner: req.user._id });
+        const loans = await Loan.find({ owner: req.user._id });
+  
+        totalIncome = incomeRecords.reduce((sum, inc) => sum + inc.amount, 0);
         totalExpenses = expenseRecords.reduce((sum, exp) => sum + exp.amount, 0);
+        totalSavingGoal = savingGoals.reduce((sum, goal) => sum + (goal.goalAmount || 0), 0);
+        totalLent = loans.filter(l => l.type === "lent").reduce((sum, l) => sum + l.amount, 0);
+        totalBorrowed = loans.filter(l => l.type === "borrowed").reduce((sum, l) => sum + l.amount, 0);
+  
+        // ✅ Calculate net saving
+        netSaving = totalIncome - totalExpenses;
+  
+        // ✅ Find upcoming loan
+        const futureLoans = loans.filter(l => new Date(l.dueDate) >= new Date());
+        futureLoans.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+        upcomingLoan = futureLoans[0] || null;
       }
   
-      res.render("expenses/home.ejs", { reviews, income, totalIncome, totalExpenses });
+      res.render("expenses/home.ejs", {
+        reviews,
+        income,
+        totalIncome,
+        totalExpenses,
+        totalSavingGoal,
+        totalLent,
+        totalBorrowed,
+        netSaving,
+        upcomingLoan
+      });
   
     } catch (err) {
       console.error("Homepage crash:", err);

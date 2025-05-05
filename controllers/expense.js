@@ -17,12 +17,14 @@ module.exports.index = async (req, res) => {
     }
   });
   const incomes = await Income.find({ owner: req.user._id });
+  const totalIncome = incomes.reduce((sum, inc) => sum + inc.amount, 0);  // ✅ Add this
    // Render the index page with the data
   res.render("expenses/index.ejs", {  
     allExpenses,
     totalExpenses,
     categorySummary,
-    incomes 
+    incomes,
+    totalIncome  
   });
 };
 

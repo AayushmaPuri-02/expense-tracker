@@ -4,6 +4,8 @@ const Papa = require("papaparse");
 const router = express.Router();
 const Income = require("../models/income");
 const Expense = require("../models/expense");
+const SavingGoal = require("../models/savingGoal");
+const Loan = require("../models/loan");
 const { isLoggedIn } = require("../middleware/isLoggedIn");
 const wrapAsync = require("../utils/wrapAsync");
 const incomeController = require("../controllers/income");
@@ -13,21 +15,36 @@ const upload = multer({ storage });
 
 
 
-// Show all income entries for current user
+
 router.get("/", isLoggedIn, async (req, res) => {
   const userId = req.user._id;
   const user = req.user;
 
   const incomes = await Income.find({ owner: userId });
   const expenses = await Expense.find({ owner: userId });
+  const loans = await Loan.find({ owner: userId });
+  const savingGoals = await SavingGoal.find({ owner: userId });
 
   const totalIncome = incomes.reduce((sum, inc) => sum + inc.amount, 0);
   const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
 
-  res.render("home", {
+  const totalLent = loans
+    .filter((loan) => loan.type === "lent")
+    .reduce((sum, loan) => sum + loan.amount, 0);
+
+  const totalBorrowed = loans
+    .filter((loan) => loan.type === "borrowed")
+    .reduce((sum, loan) => sum + loan.amount, 0);
+
+  const totalSavingGoal = savingGoals.reduce((sum, goal) => sum + goal.amount, 0);
+
+  res.render("expenses/home", {
     currUser: user,
     totalIncome,
-    totalExpenses
+    totalExpenses,
+    totalLent,
+    totalBorrowed,
+    totalSavingGoal
   });
 });
 

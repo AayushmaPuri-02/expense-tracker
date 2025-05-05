@@ -51,7 +51,7 @@ module.exports.createLoan = async (req, res) => {
     if (req.file) {
       console.log("File uploaded:", req.file);
       loan.document = {
-        url: req.file.path,
+        url: req.file.path,    
         filename: req.file.filename,
         mimetype: req.file.mimetype
       };
@@ -135,7 +135,7 @@ module.exports.updateLoan = async (req, res) => {
     if (req.file) {
       console.log("File uploaded:", req.file);
       loan.document = {
-        url: req.file.path,
+        url: req.file.path,   
         filename: req.file.filename,
         mimetype: req.file.mimetype
       };
