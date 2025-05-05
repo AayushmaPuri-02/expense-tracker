@@ -30,6 +30,10 @@ module.exports.createLoan = async (req, res) => {
   
     const start = new Date(startDate);
     const due = new Date(dueDate);
+    if (due <= start) {
+      req.flash("error", "Due date must be after the start date.");
+      return res.redirect("back");
+    }
     const durationDays = Math.ceil((due - start) / (1000 * 60 * 60 * 24));
   
     const interest = parseFloat(((amountNum * interestRateNum * durationDays) / (100 * 365)).toFixed(2));
@@ -110,6 +114,10 @@ module.exports.updateLoan = async (req, res) => {
   
     const start = new Date(startDate);
     const due = new Date(dueDate);
+    if (due <= start) {
+      req.flash("error", "Due date must be after the start date.");
+      return res.redirect("back");
+    }
     const durationDays = Math.ceil((due - start) / (1000 * 60 * 60 * 24));
   
     const interest = parseFloat(((amountNum * interestRateNum * durationDays) / (100 * 365)).toFixed(2));
