@@ -1,0 +1,51 @@
+.edit-income-container {
+    max-width: 720px;
+    margin: auto;
+    padding: 2.5rem;
+  
+    border-left: 6px solid #fbbf24; /* warm amber */
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    animation: fadeIn 0.3s ease-in;
+  }
+  
+  .edit-income-header {
+    text-align: center;
+    color: #b45309;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+  
+  .edit-income-header i {
+    color: #f59e0b;
+  }
+  
+  .edit-income-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+  
+  .edit-income-row .form-group {
+    flex: 1;
+    min-width: 260px;
+  }
+  
+  .btn-update {
+    background-color: #f59e0b;
+    color: white;
+    font-weight: 600;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .btn-update:hover {
+    background-color: #d97706;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }

@@ -1,56 +1,73 @@
 <% layout("layouts/boilerplate") %>
+<link rel="stylesheet" href="/css/edit-income.css">
 
 <div class="container mt-5">
-  <div class="card shadow p-4">
-    <h3 class="mb-4">Edit Income</h3>
+  <div class="edit-income-container">
+
+    <h3 class="edit-income-header">
+      <i class="fas fa-edit me-2"></i> Edit Income
+    </h3>
+
     <form action="/incomes/<%= income._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
-      <div class="mb-3">
-        <label for="amount" class="form-label">Amount (₹)</label>
-        <input
-          type="number"
-          name="income[amount]"
-          id="amount"
-          class="form-control"
-          required
-          value="<%= income.amount %>"
-        />
+
+      <!-- Row: Amount & Category -->
+      <div class="edit-income-row mb-3">
+        <div class="form-group">
+          <label for="amount" class="form-label">Amount (₹)</label>
+          <input
+            type="number"
+            name="income[amount]"
+            id="amount"
+            class="form-control"
+            required
+            value="<%= income.amount %>"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="category" class="form-label">Category</label>
+          <select name="income[category]" id="category" class="form-select">
+            <option value="Salary" <%= income.category === "Salary" ? "selected" : "" %>>Salary</option>
+            <option value="Freelance" <%= income.category === "Freelance" ? "selected" : "" %>>Freelance</option>
+            <option value="Business" <%= income.category === "Business" ? "selected" : "" %>>Business</option>
+            <option value="Gift" <%= income.category === "Gift" ? "selected" : "" %>>Gift</option>
+            <option value="Rental" <%= income.category === "Rental" ? "selected" : "" %>>Rental</option>
+            <option value="Investment" <%= income.category === "Investment" ? "selected" : "" %>>Investment</option>
+            <option value="Other" <%= income.category === "Other" ? "selected" : "" %>>Other</option>
+          </select>
+        </div>
       </div>
 
-      <div class="mb-3">
-        <label for="category" class="form-label">Category</label>
-        <select name="income[category]" id="category" class="form-select">
-          <option value="Salary" <%= income.category === "Salary" ? "selected" : "" %>>Salary</option>
-          <option value="Freelance" <%= income.category === "Freelance" ? "selected" : "" %>>Freelance</option>
-          <option value="Business" <%= income.category === "Business" ? "selected" : "" %>>Business</option>
-          <option value="Gift" <%= income.category === "Gift" ? "selected" : "" %>>Gift</option>
-          <option value="Rental" <%= income.category === "Rental" ? "selected" : "" %>>Rental</option>
-          <option value="Investment" <%= income.category === "Investment" ? "selected" : "" %>>Investment</option>
-          <option value="Other" <%= income.category === "Other" ? "selected" : "" %>>Other</option>
-        </select>
-      </div>
-
+      <!-- Current Receipt -->
       <div class="mb-3">
         <label>Current Receipt:</label>
         <% if (income.receipt && income.receipt.url) { %>
-          <div>
-            <a href="<%= income.receipt.url %>" target="_blank">View Receipt</a>
-          </div>
+          <div><a href="<%= income.receipt.url %>" target="_blank">View Receipt</a></div>
         <% } else { %>
           <p>No receipt uploaded</p>
         <% } %>
       </div>
-    
+
+      <!-- Upload New Receipt -->
       <div class="mb-3">
         <label for="receipt" class="form-label">Upload New Receipt (optional)</label>
         <input class="form-control" type="file" name="receipt" id="receipt" accept="image/*">
       </div>
-      ...
+
+      <!-- Description -->
       <div class="mb-3">
         <label for="sourceDesc" class="form-label">Income Source Description</label>
-        <textarea name="income[sourceDesc]" id="sourceDesc" class="form-control" required><%= income.sourceDesc %></textarea>
+        <textarea
+          name="income[sourceDesc]"
+          id="sourceDesc"
+          class="form-control"
+          required
+          rows="2"
+        ><%= income.sourceDesc %></textarea>
       </div>
-      
-      <div class="mb-3">
+
+      <!-- Note -->
+      <div class="mb-4">
         <label for="note" class="form-label">Note (optional)</label>
         <textarea
           name="income[note]"
@@ -60,7 +77,12 @@
         ><%= income.note %></textarea>
       </div>
 
-      <button class="btn btn-success">Update Income</button>
+      <!-- Submit -->
+      <div class="text-center">
+        <button class="btn btn-update">
+          <i class="fas fa-check-circle me-1"></i> Update Income
+        </button>
+      </div>
     </form>
   </div>
 </div>
