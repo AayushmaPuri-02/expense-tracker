@@ -1,24 +1,35 @@
 <% layout("layouts/boilerplate.ejs") %>
 
+<link rel="stylesheet" href="/css/loan-form.css">
+
 <style>
-  .expense-card {
+  .expense-card,
+  .income-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.75rem 1rem;
+    padding: 1rem;
     border-radius: 12px;
-    background-color: #e6eee7;
-    border: 1px solid #c5ccc9;
-    box-shadow: 0 4px 8px rgba(5, 30, 18, 0.8);
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
     margin-bottom: 1rem;
+    height: 72px;
+    cursor: pointer;
+  }
+  .expense-card {
+  background-color: #ffc0c071 !important;
+}
+
+  .income-card {
+    background-color: #f3f1fe !important; /* light violet */
   }
 
-  .expense-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 14px rgba(9, 46, 29, 0.15);
+  .expense-card:hover,
+  .income-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   }
 
   .expense-img {
@@ -33,12 +44,12 @@
     flex: 1;
     font-weight: 600;
     font-size: 1rem;
-    color: #1c1c1c;
+    color: #333;
   }
 
   .expense-amount {
-    color: #198754;
-    font-weight: 600;
+    color: #3f3d56;
+    font-weight: 700;
     font-size: 1rem;
   }
 
@@ -46,88 +57,56 @@
     font-weight: bold;
     text-align: center;
     margin-bottom: 1.5rem;
-    color: #123c2f;
   }
 
-  .summary-box {
-    min-width: 100%;
-  }
+  .alert-expense {
+    background-color: #ffc0c071 !important;
+  border-left: 6px solid #e27419;
+  color: #92400e;
+}
 
-  @media (min-width: 768px) {
-    .summary-box {
-      min-width: 100%;
-    }
+
+
+  .alert-income {
+    background-color: #ede9fe;
+    border-left: 6px solid #7c3aed;
+    color: #4c1d95;
   }
 </style>
 
-<div class="container my-5">
-  <!-- Summary Row -->
-  <div class="row g-3 justify-content-center mb-4">
-    <!-- <div class="alert alert-success d-flex justify-content-between align-items-center shadow-sm summary-box"
-      data-bs-toggle="tooltip"
-      data-bs-placement="top"
-      title="Click to update your income"
-      onclick="window.location.href='/incomes/new'"
-      style="cursor: pointer;">
-      <h5 class="mb-0">💼 Your Income:</h5>
-      <li>Daily: ₹<%= currUser.income?.daily || 0 %></li>
-      <li>Weekly: ₹<%= currUser.income?.weekly || 0 %></li>
-      <li>Monthly: ₹<%= currUser.income?.monthly || 0 %></li>
-    </div> -->
-<!-- Income Records Below -->
-<a href="/incomes/download" class="btn btn-outline-success mb-3">
-  <i class="fa-solid fa-download me-1"></i> Download Income CSV
-</a>
-<div class="mt-5">
-  <h4>Your Income Records</h4>
-  <% if (incomes.length === 0) { %>
-    <p>No income entries yet.</p>
-  <% } else { %>
-    <table class="table table-bordered table-striped shadow-sm">
-      <thead>
-        <tr>
-          <th>Amount</th>
-          <th>Category</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% incomes.forEach(income => { %>
-          <tr onclick="window.location.href='/incomes/<%= income._id %>'" style="cursor: pointer;">
-            <td>₹<%= income.amount %></td>
-            <td><%= income.category %></td>
-            <td><%= income.sourceDesc %></td>
-          </tr>
-        <% }) %>
-      </tbody>
-    </table>
-  <% } %>
-</div>
-</div>
+<div class="container my-2">
 
-    <!-- Total Expenses Box -->
+  <!-- Download Income CSV -->
+  <div class="row g-3 justify-content-center mb-4 mt-2">
     <div class="col-md-4">
-      <div class="alert alert-info d-flex justify-content-between align-items-center shadow-sm summary-box">
-        <h5 class="mb-0">💰 Total Expenses:</h5>
-        <h4 class="mb-0 text-danger">₹<%= totalExpenses %></h4>
-      </div>
+      <a href="/incomes/download" class="btn btn-outline-success w-100 shadow-sm">
+        <i class="fa-solid fa-download me-1"></i> Download Income CSV
+      </a>
     </div>
   </div>
 
-  <!-- Total Income Box -->
-<div class="col-md-4">
-  <div class="alert alert-success d-flex justify-content-between align-items-center shadow-sm summary-box">
-    <h5 class="mb-0">📈 Total Income:</h5>
-    <h4 class="mb-0 text-success">₹<%= totalIncome %></h4>
+  <!-- Totals: Expenses and Income -->
+<!-- Totals: Expenses and Income -->
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="alert alert-expense d-flex justify-content-between align-items-center shadow-sm">
+      <h5 class="mb-0">💸 Total Expenses:</h5>
+      <h4 class="mb-0">₹<%= totalExpenses %></h4>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="alert alert-income d-flex justify-content-between align-items-center shadow-sm">
+      <h5 class="mb-0">📈 Total Income:</h5>
+      <h4 class="mb-0">₹<%= totalIncome %></h4>
+    </div>
   </div>
 </div>
 
-  <!-- Main Content Row -->
+  <!-- Main Section: Expenses & Income -->
   <div class="row g-4 align-items-start">
-    <!-- Left: All Expenses -->
-    <div class="col-md-7">
-      <h2 class="expense-heading">All Expenses</h2>
-      <h5 class="mb-3"><%= currUser.username %></h5>
+    <!-- Expenses -->
+    <div class="col-md-6">
+      <h2 class="expense-heading text-danger">💸 Expenses</h2>
       <% for(let expense of allExpenses) { %>
         <div class="expense-card" onclick="window.location.href='/expenses/<%= expense._id %>'">
           <img src="<%= expense.image.url %>" alt="expense image" class="expense-img">
@@ -137,19 +116,27 @@
       <% } %>
     </div>
 
-    <!-- Right: Pie Chart -->
-    <div class="col-md-5">
-      <div class="card p-3 shadow-sm">
-        <h5 class="mb-3 text-center">Your Spending by Category</h5>
+    <!-- Income and Chart -->
+    <div class="col-md-6">
+      <h2 class="expense-heading" style="color: #6d28d9;">📈 Income</h2> <!-- violet -->
+      <% for (let income of incomes) { %>
+        <div class="income-card" onclick="window.location.href='/incomes/<%= income._id %>'">
+          <div class="expense-title"><%= income.category %></div>
+          <div class="expense-amount">&#8377; <%= income.amount.toLocaleString("en-IN") %></div>
+        </div>
+      <% } %>
+
+      <!-- Pie Chart below income -->
+      <div class="card p-3 shadow-sm mt-4">
+        <h5 class="mb-3 text-center text-primary">Spending by Category</h5>
         <canvas id="expenseChart" width="300" height="300"></canvas>
       </div>
     </div>
   </div>
+</div>
 
-  
-<!-- Chart.js CDN -->
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
   const categorySummary = JSON.parse('<%- JSON.stringify(categorySummary || {}) %>');
   const labels = Object.keys(categorySummary);
@@ -183,7 +170,6 @@
   });
 </script>
 
-<!-- Bootstrap Tooltip Init -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
