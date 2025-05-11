@@ -1,5 +1,5 @@
 <% layout("layouts/boilerplate") %>
-
+<link rel="stylesheet" href="/css/saving-goals.css">
 <div class="container my-5">
   <h2 class="mb-4">Your Saving Goals</h2>
 
@@ -7,32 +7,38 @@
     <p>You have not added any saving goals yet.</p>
     <a href="/saving/new" class="btn btn-primary">Set Saving Goal</a>
   <% } else { %>
-    <ul class="list-group">
+    <div class="saving-grid">
       <% savings.forEach(goal => { %>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          <div>
-            <strong>Target:</strong> ₹<%= goal.goalAmount %> by <%= new Date(goal.targetDate).toDateString() %><br/>
-            <strong>Reason:</strong> <%= goal.goalReason %>
-          </div>
-          <div>
-            <a href="/saving/<%= goal._id %>" class="btn btn-sm btn-outline-info">View</a>
-            <a href="/saving/<%= goal._id %>/edit" class="btn btn-sm btn-outline-secondary">Edit</a>
-            <form action="/saving/<%= goal._id %>?_method=DELETE" method="POST" class="d-inline">
-              <button class="btn btn-sm btn-outline-danger">Delete</button>
+        <div class="saving-card">
+          <div class="goal-amount">🎯 ₹<%= goal.goalAmount.toLocaleString("en-IN") %></div>
+          <div class="goal-date">by <%= new Date(goal.targetDate).toDateString() %></div>
+          <div class="goal-reason">Reason: <%= goal.goalReason %></div>
+    
+          <div class="btn-group">
+            <a href="/saving/<%= goal._id %>/edit" class="btn btn-outline-secondary">Edit</a>
+            <form action="/saving/<%= goal._id %>?_method=DELETE" method="POST">
+              <button class="btn btn-outline-danger">Delete</button>
             </form>
           </div>
-        </li>
+        </div>
       <% }) %>
-    </ul>
+    </div>
 
     <a href="/saving/new" class="btn btn-success mt-4">+ Add Another Goal</a>
 
     <div class="card mt-5 p-3 shadow">
-      <h5 class="mb-3 text-center">📊 Saving Goal vs Current Savings</h5>
+      <% if (totalSavings >= totalTarget) { %>
+        <p class="text-success text-center fw-bold mt-3">🎉 You’ve achieved your savings goal!</p>
+      <% } else { %>
+        <p class="text-warning text-center fw-bold mt-3">⚠️ You still have ₹<%= (totalTarget - totalSavings).toLocaleString("en-IN") %> left to save.</p>
+      <% } %>
       <canvas id="summaryChart" width="400" height="200"></canvas>
     </div>
   <% } %>
 </div>
+<p class="text-muted small text-center mt-2">
+  💡 Note: Savings are calculated based on your income and expense records only. Loans are not included.
+</p>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>

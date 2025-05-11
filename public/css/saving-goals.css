@@ -1,0 +1,57 @@
+.saving-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .saving-card {
+    background: white;
+    border-left: 6px solid #7b2cbf; /* violet-ish (goal/vision) */
+    padding: 1.25rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+  }
+  
+  .saving-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .saving-card .goal-amount {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #3c096c;
+  }
+  
+  .saving-card .goal-date {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+  }
+  
+  .saving-card .goal-reason {
+    background-color: #f5f0fa;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #4a4a4a;
+    font-weight: 500;
+    margin-top: auto;
+    margin-bottom: 1rem;
+  }
+  
+  .saving-card .btn-group {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .saving-card .btn {
+    padding: 0.45rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 6px;
+  }
