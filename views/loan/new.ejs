@@ -1,51 +1,112 @@
 <% layout("layouts/boilerplate") %>
 
-<form action="/loan" method="POST" enctype="multipart/form-data">
-  <div class="mb-3">
-    <label for="type" class="form-label">Loan Type</label>
-    <select name="loan[type]" class="form-control" required>
-      <option value="">-- Select Type --</option>
-      <option value="lent">Lent (You gave loan)</option>
-      <option value="borrowed">Borrowed (You took loan)</option>
-    </select>
+<link rel="stylesheet" href="/css/loan-form.css">
+<!-- Bootstrap CSS/Font Awesome already included in layout -->
+
+<!-- Create Loan Form -->
+<div class="container py-5">
+  <div class="form-container fade-in">
+    <div class="form-header">
+      <h2><i class="fas fa-hand-holding-usd me-2"></i> Add New Loan</h2>
+      <p>Record a new loan that you've borrowed or lent</p>
+    </div>
+ <!-- Back Button -->
+ <div class="text-start mb-4">
+  <a href="/loan" class="btn btn-outline-secondary">
+    <i class="fas fa-arrow-left me-1"></i> Back to Loans
+  </a>
+</div>
+    <form action="/loan" method="POST" enctype="multipart/form-data">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="type" class="form-label">Loan Type</label>
+            <select name="loan[type]" class="form-select" required>
+              <option value="">-- Select Type --</option>
+              <option value="lent">Lent (You gave loan)</option>
+              <option value="borrowed">Borrowed (You took loan)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="party" class="form-label">Person/Institution</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+              <input type="text" name="loan[party]" class="form-control" required>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="amount" class="form-label">Amount (₹)</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-rupee-sign"></i></span>
+              <input type="number" name="loan[amount]" class="form-control" required min="0">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="interestRate" class="form-label">Interest Rate (% per annum)</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-percent"></i></span>
+              <input type="number" name="loan[interestRate]" class="form-control" required step="0.1" min="0">
+              <span class="input-group-text">%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="startDate" class="form-label">Start Date</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+              <input type="date" name="loan[startDate]" class="form-control" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="dueDate" class="form-label">Due Date</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-calendar-check"></i></span>
+              <input type="date" name="loan[dueDate]" class="form-control" required>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="notes" class="form-label">Notes</label>
+        <textarea name="loan[notes]" class="form-control" rows="3" placeholder="Any additional terms..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Upload Document (PDF/Image)</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-file-upload"></i></span>
+          <input type="file" name="document" class="form-control" accept=".pdf,image/*">
+        </div>
+        <div class="form-text text-muted">Upload agreement, receipt, etc.</div>
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="/loan" class="btn btn-secondary me-2">
+          <i class="fas fa-times me-1"></i> Cancel
+        </a>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-check me-1"></i> Save Loan
+        </button>
+      </div>
+    </form>
   </div>
-
-  <div class="mb-3">
-    <label for="party" class="form-label">Person/Institution</label>
-    <input type="text" name="loan[party]" class="form-control" required>
-  </div>
-
-  <div class="mb-3">
-    <label for="amount" class="form-label">Amount (₹)</label>
-    <input type="number" name="loan[amount]" class="form-control" required min="0">
-  </div>
-
-  <div class="mb-3">
-    <label for="interestRate" class="form-label">Interest Rate (% per annum)</label>
-    <input type="number" name="loan[interestRate]" class="form-control" required min="0">
-  </div>
-
-  <div class="mb-3">
-    <label for="startDate" class="form-label">Start Date</label>
-    <input type="date" name="loan[startDate]" class="form-control" required>
-  </div>
-
-  <div class="mb-3">
-    <label for="dueDate" class="form-label">Due Date</label>
-    <input type="date" name="loan[dueDate]" class="form-control" required>
-  </div>
-
-  <div class="mb-3">
-    <label for="note" class="form-label">Note</label>
-    <textarea name="loan[notes]" class="form-control"></textarea>
-  </div>
-
-
-  <div class="mb-3">
-    <label class="form-label">Upload Document (PDF/Image)</label>
-    <input type="file" name="document" class="form-control" accept=".pdf,image/*">
-  </div>
-
-  <button type="submit" class="btn btn-primary">Save Loan</button>
-  <a href="/loan" class="btn btn-secondary">Cancel</a>
-</form>
+</div>

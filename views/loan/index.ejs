@@ -1,32 +1,59 @@
 <% layout("layouts/boilerplate") %>
-
+<link rel="stylesheet" href="/css/loan-list.css">
 <div class="container my-5">
-  <h2 class="mb-4">💸 Your Loan Records</h2>
+  <h2 class="mb-4 fw-bold">💸 Your Loan Records</h2>
 
   <% if (loans.length === 0) { %>
     <p>No loans added yet.</p>
     <a href="/loan/new" class="btn btn-primary">+ Add Loan</a>
   <% } else { %>
-    <ul class="list-group mb-4">
-      <% loans.forEach(loan => { %>
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          <div>
-            <strong>Type:</strong> <%= loan.type %> | 
-            <strong>Amount:</strong> ₹<%= loan.amount %> | 
-            <strong>Interest:</strong> <%= loan.interestRate %>% 
-            <br/>
-            <strong>From/To:</strong> <%= loan.person %>
-          </div>
-          <div>
-            <a href="/loan/<%= loan._id %>" class="btn btn-sm btn-outline-info">View</a>
-            <a href="/loan/<%= loan._id %>/edit" class="btn btn-sm btn-outline-secondary">Edit</a>
-            <form action="/loan/<%= loan._id %>?_method=DELETE" method="POST" class="d-inline">
-              <button class="btn btn-sm btn-outline-danger">Delete</button>
-            </form>
-          </div>
-        </li>
-      <% }) %>
-    </ul>
-    <a href="/loan/new" class="btn btn-success">+ Add Another Loan</a>
+    <div class="card fade-in">
+      <div class="card-header d-flex justify-content-between align-items-center bg-white py-3">
+        <h5 class="mb-0">Active Loans</h5>
+        <a href="/loan/new" class="btn btn-primary btn-sm">
+          <i class="fas fa-plus me-1"></i> Add New
+        </a>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Interest</th>
+                <th>From/To</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% loans.forEach(loan => { %>
+                <tr>
+                  <td>
+                    <% if (loan.type === "lent") { %>
+                      <span class="badge bg-lent">Lent</span>
+                    <% } else { %>
+                      <span class="badge bg-borrowed">Borrowed</span>
+                    <% } %>
+                  </td>
+                  <td>₹<%= loan.amount %></td>
+                  <td><%= loan.interestRate %>%</td>
+                  <td><%= loan.party %></td>
+                  <td>
+                    <div class="d-flex gap-2">
+                      <a href="/loan/<%= loan._id %>" class="btn btn-sm btn-outline-primary">View</a>
+                      <a href="/loan/<%= loan._id %>/edit" class="btn btn-sm btn-warning text-white">Edit</a>
+                      <form action="/loan/<%= loan._id %>?_method=DELETE" method="POST" class="d-inline">
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   <% } %>
 </div>
