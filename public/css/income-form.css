@@ -1,0 +1,86 @@
+.income-form-container {
+    background: white;
+    max-width: 700px;
+    margin: auto;
+    padding: 2.5rem;
+    border-radius: 16px;
+    border-left: 5px solid #5e23ffb7; /* soft blue */
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    animation: fadeIn 0.4s ease-out;
+  }
+  
+  .income-form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .income-form-header h3 {
+    font-weight: 700;
+    color: #5e23ffb7; /* medium blue */
+  }
+  
+  .income-form-header p {
+    color: #6b7280;
+    font-size: 0.95rem;
+  }
+  
+  .form-label {
+    font-weight: 500;
+    color: #374151;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-group-text {
+    background-color: rgba(96, 165, 250, 0.1); /* light blue background */
+    border: none;
+    color: #5e23ffb7;
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+    border-radius: 10px 0 0 10px;
+  }
+  
+  .input-group .form-control,
+  .input-group textarea,
+  .input-group select {
+    border-radius: 0 10px 10px 0;
+    border-left: none;
+  }
+  
+  .form-control,
+  .form-select,
+  textarea.form-control {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #d1d5db;
+    transition: all 0.3s ease;
+  }
+  
+  .form-control:focus,
+  .form-select:focus,
+  textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.2);
+  }
+  
+  .btn-income {
+    background-color: #5e23ffb7;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-income:hover {
+    background-color: #2563eb;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }

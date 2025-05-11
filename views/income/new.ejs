@@ -1,80 +1,102 @@
 <% layout("layouts/boilerplate") %>
+<link rel="stylesheet" href="/css/income-form.css">
 
 <div class="container mt-5">
-  <div class="card shadow p-4">
-    <h3 class="mb-4">Add New Income</h3>
+  <div class="income-form-container">
+    <div class="income-form-header">
+      <h3><i class="fas fa-wallet me-2"></i> Add New Income</h3>
+      <p>Record a new income source to track your earnings</p>
+    </div>
 
     <form action="/incomes" method="POST" enctype="multipart/form-data">
-      
+
       <!-- Amount -->
       <div class="mb-3">
         <label for="amount" class="form-label">Amount (₹)</label>
-        <input
-          type="number"
-          name="income[amount]"
-          id="amount"
-          class="form-control"
-          required
-          placeholder="Enter income amount"
-        />
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-rupee-sign"></i></span>
+          <input
+            type="number"
+            name="income[amount]"
+            id="amount"
+            class="form-control"
+            required
+            placeholder="Enter income amount"
+          />
+        </div>
       </div>
 
       <!-- Category -->
       <div class="mb-3">
         <label for="category" class="form-label">Category</label>
-        <select name="income[category]" id="category" class="form-select" required>
-          <option value="" disabled selected>Select category</option>
-          <option value="Salary">Salary</option>
-          <option value="Freelance">Freelance</option>
-          <option value="Business">Business</option>
-          <option value="Rental">Rental</option>
-          <option value="Gift">Gift</option>
-          <option value="Investment">Investment</option>
-          <option value="Other">Other</option>
-        </select>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-layer-group"></i></span>
+          <select name="income[category]" id="category" class="form-select" required>
+            <option value="" disabled selected>Select category</option>
+            <option value="Salary">Salary</option>
+            <option value="Freelance">Freelance</option>
+            <option value="Business">Business</option>
+            <option value="Rental">Rental</option>
+            <option value="Gift">Gift</option>
+            <option value="Investment">Investment</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
       </div>
 
-      <!-- Source Description -->
+      <!-- Description -->
       <div class="mb-3">
         <label for="sourceDesc" class="form-label">Income Source Description</label>
-        <textarea
-          name="income[sourceDesc]"
-          id="sourceDesc"
-          class="form-control"
-          rows="2"
-          required
-          placeholder="E.g. freelance writing for client, rent from flat, etc."
-        ></textarea>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+          <textarea
+            name="income[sourceDesc]"
+            id="sourceDesc"
+            class="form-control"
+            rows="2"
+            required
+            placeholder="E.g. freelance writing for client, rent from flat, etc."
+          ></textarea>
+        </div>
       </div>
 
-      <!-- Note (optional) -->
+      <!-- Note -->
       <div class="mb-3">
         <label for="note" class="form-label">Note (optional)</label>
-        <textarea
-          name="income[note]"
-          id="note"
-          class="form-control"
-          rows="3"
-          placeholder="Any additional notes..."
-        ></textarea>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-sticky-note"></i></span>
+          <textarea
+            name="income[note]"
+            id="note"
+            class="form-control"
+            rows="2"
+            placeholder="Any additional notes..."
+          ></textarea>
+        </div>
       </div>
 
       <!-- Receipt Upload -->
-      <div class="mb-3">
+      <div class="mb-4">
         <label for="receipt" class="form-label">Upload Receipt (optional)</label>
-        <input
-          class="form-control"
-          type="file"
-          name="receipt"
-          id="receipt"
-          accept="image/*"
-        />
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-file-upload"></i></span>
+          <input
+            class="form-control"
+            type="file"
+            name="receipt"
+            id="receipt"
+            accept="image/*"
+          />
+        </div>
       </div>
 
-      <!-- Submit Button -->
-      <button type="submit" class="btn btn-success w-100">
-        <i class="fa-solid fa-plus me-1"></i> Add Income
-      </button>
+      <!-- Submit -->
+      <div class="d-grid">
+        <button type="submit" class="btn btn-income">
+          <i class="fas fa-plus me-1"></i> Add Income
+        </button>
+      </div>
     </form>
   </div>
 </div>
+<br>
