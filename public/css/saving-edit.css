@@ -1,0 +1,57 @@
+.edit-form-container {
+    background: #fff;
+    max-width: 600px;
+    margin: auto;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.4s ease-out;
+  }
+  
+  .edit-form-container h3 {
+    text-align: center;
+    font-weight: 700;
+    color: #5e548e;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-label {
+    font-weight: 500;
+    color: #444;
+  }
+  
+  input.form-control {
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+  }
+  
+  input.form-control:focus {
+    border-color: #7b2cbf;
+    box-shadow: 0 0 0 0.2rem rgba(123, 44, 191, 0.2);
+  }
+  
+  .btn-update {
+    background-color: #f4a261;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-update:hover {
+    background-color: #e76f51;
+  }
+  
+  .btn-secondary {
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
