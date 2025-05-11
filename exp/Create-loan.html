@@ -1,0 +1,404 @@
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="dashboard.html">
+        <i class="fas fa-hand-holding-usd me-2"></i>Loan Tracker
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="dashboard.html"><i class="fas fa-chart-line me-1"></i> Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="create-loan.html"><i class="fas fa-plus-circle me-1"></i> Add Loan</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+              <img src="/api/placeholder/40/40" alt="Profile" class="profile-img me-1">
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profile</a></li>
+              <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="index.html"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Create Loan Form -->
+  <div class="container py-5">
+    <div class="form-container fade-in">
+      <div class="form-header">
+        <h2>Add New Loan</h2>
+        <p>Record a new loan that you've borrowed or lent</p>
+      </div>
+      
+      <!-- Loan Type Selector -->
+      <div class="loan-type-selector">
+        <div class="loan-type-option active">
+          <i class="fas fa-arrow-circle-up"></i>
+          <h4>Money Lent</h4>
+          <p>Record money you've lent to others</p>
+        </div>
+        <div class="loan-type-option">
+          <i class="fas fa-arrow-circle-down"></i>
+          <h4>Money Borrowed</h4>
+          <p>Record money you've borrowed from others</p>
+        </div>
+      </div>
+      
+      <form>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Person/Institution</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                <input type="text" class="form-control" placeholder="Name of person or institution" required>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Amount</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-rupee-sign"></i></span>
+                <input type="number" class="form-control" placeholder="Enter loan amount" required>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Interest Rate (%)</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-percentage"></i></span>
+                <input type="number" class="form-control" step="0.1" placeholder="e.g. 5.5">
+                <span class="input-group-text">%</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Category</label>
+              <select class="form-select">
+                <option value="">Select a category</option>
+                <option value="personal">Personal</option>
+                <option value="business">Business</option>
+                <option value="education">Education</option>
+                <option value="family">Family</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Start Date</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                <input type="date" class="form-control" required>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Due Date</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-calendar-check"></i></span>
+                <input type="date" class="form-control" required>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Notes</label>
+          <textarea class="form-control" rows="3" placeholder="Add any additional details or terms..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Upload Document</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-file-upload"></i></span>
+            <input type="file" class="form-control">
+          </div>
+          <div class="form-text text-muted">Upload any relevant documents (agreement, receipt, etc.)</div>
+        </div>
+        
+        <div class="text-center mt-4">
+          <a href="dashboard.html" class="btn btn-secondary me-2">
+            <i class="fas fa-times me-1"></i> Cancel
+          </a>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-check me-1"></i> Create Loan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Simple script to toggle active loan type
+    document.addEventListener('DOMContentLoaded', function() {
+      const loanTypeOptions = document.querySelectorAll('.loan-type-option');
+      
+      loanTypeOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          loanTypeOptions.forEach(opt => opt.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Loan - Loan Tracker</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4895ef;
+      --success-color: #4cc9f0;
+      --warning-color: #f72585;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f6f8fb;
+      color: #333;
+    }
+
+    .navbar {
+      background-color: var(--primary-color);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: white !important;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.85) !important;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: white !important;
+    }
+
+    .form-container {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 2.5rem;
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .form-header h2 {
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-header p {
+      color: #6c757d;
+    }
+
+    .form-control, .form-select {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #dee2e6;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #495057;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--secondary-color);
+      border-color: var(--secondary-color);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+      border-color: #5a6268;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group-text {
+      background-color: #f8f9fa;
+      border-right: none;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .input-group .form-control {
+      border-left: none;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    .input-group-text i {
+      color: #6c757d;
+    }
+
+    .profile-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .loan-type-selector {
+      display: flex;
+      margin-bottom: 1.5rem;
+    }
+
+    .loan-type-option {
+      flex: 1;
+      text-align: center;
+      padding: 1.5rem;
+      border: 2px solid #dee2e6;
+      border-radius: 10px;
+      margin: 0 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .loan-type-option:first-child {
+      margin-left: 0;
+    }
+
+    .loan-type-option:last-child {
+      margin-right: 0;
+    }
+
+    .loan-type-option.active {
+      border-color: var(--primary-color);
+      background-color: rgba(67, 97, 238, 0.05);
+    }
+
+    .loan-type-option i {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #6c757d;
+      transition: color 0.3s ease;
+    }
+
+    .loan-type-option.active i {
+      color: var(--primary-color);
+    }
+
+    .loan-type-option h4 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .loan-type-option p {
+      color: #6c757d;
+      margin-bottom: 0;
+      font-size: 0.9rem;
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .form-container {
+        padding: 1.5rem;
+      }
+      
+      .loan-type-selector {
+        flex-direction: column;
+      }
+      
+      .loan-type-option {
+        margin: 0.5rem 0;
+      }
+      
+      .loan-type-option:first-child {
+        margin-top: 0;
+      }
+      
+      .loan-type-option:last-child {
+        margin-bottom: 0;
+      }
+    }
