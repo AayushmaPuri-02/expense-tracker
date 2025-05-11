@@ -37,11 +37,37 @@
   textarea {
     resize: vertical;
   }
+
+  .custom-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    padding: 1rem 0;
+  }
+
+  .summary-item-box {
+    flex: 1 1 280px;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1.05rem;
+  }
+
+  .income-box    { background-color: #e0f7fa; }
+  .expense-box   { background-color: #ffebee; }
+  .saving-box    { background-color: #e8f5e9; }
+  .lent-box      { background-color: #f3e5f5; }
+  .borrow-box    { background-color: #fff3e0; }
+  .progress-box  { background-color: #e3f2fd; }
+  .loan-box      { background-color: #fbe9e7; }
 </style>
 
 <div class="container my-5">
-
-  <!-- Logged Out View -->
   <% if (!currUser) { %>
     <!-- Hero Section -->
     <div class="section-box">
@@ -57,7 +83,7 @@
         </div>
       </div>
     </div>
- 
+
     <!-- Features Section -->
     <div class="section-box">
       <h2 class="fw-bold mb-4 text-center">Track, Manage, and Grow Your Finances</h2>
@@ -88,36 +114,29 @@
       </div>
     </div>
   <% } else { %>
-
-    <div class="container">
-      <div class="alert alert-success text-center shadow-sm mt-4 py-4 px-3">
-        <h3 class="mb-3">Hello, <%= currUser.username %>!</h3>
-        <p>Here's your financial summary:</p>
-    
-        <ul class="list-group mb-4">
-          <li class="list-group-item">💼 Total Income: ₹<%= totalIncome %></li>
-          <li class="list-group-item">🧾 Total Expenses: ₹<%= totalExpenses %></li>
-          <li class="list-group-item">📊 Net Saving: ₹<%= netSaving %></li>
-          <li class="list-group-item">💸 Money Lent: ₹<%= totalLent %></li>
-          <li class="list-group-item">🤝 Money Borrowed: ₹<%= totalBorrowed %></li>
-    
-          <% if (totalSavingGoal > 0) { %>
-            <li class="list-group-item">
-              📈 Saving Progress: ₹<%= netSaving %> / ₹<%= totalSavingGoal %> 
-              (<%= ((netSaving / totalSavingGoal) * 100).toFixed(0) %>%)
-            </li>
-          <% } %>
-    
-          <% if (upcomingLoan) { %>
-            <li class="list-group-item">
-              🔔 Upcoming Loan Due: ₹<%= upcomingLoan.totalRepayable %> by 
-              <%= new Date(upcomingLoan.dueDate).toDateString() %>
-            </li>
-          <% } %>
-        </ul>
+    <div class="section-box text-center">
+      <h3 class="mb-3">Hello, <%= currUser.username %>!</h3>
+      <p>Here's your financial summary:</p>
+      <div class="custom-summary">
+        <div class="summary-item-box income-box">💼 Total Income: ₹<%= totalIncome %></div>
+        <div class="summary-item-box expense-box">🧾 Total Expenses: ₹<%= totalExpenses %></div>
+        <div class="summary-item-box saving-box">📊 Net Saving: ₹<%= netSaving %></div>
+        <div class="summary-item-box lent-box">💸 Money Lent: ₹<%= totalLent %></div>
+        <div class="summary-item-box borrow-box">🤝 Money Borrowed: ₹<%= totalBorrowed %></div>
+        <% if (totalSavingGoal > 0) { %>
+          <div class="summary-item-box progress-box">
+            📈 Saving Progress: ₹<%= netSaving %> / ₹<%= totalSavingGoal %> 
+            (<%= ((netSaving / totalSavingGoal) * 100).toFixed(0) %>%)
+          </div>
+        <% } %>
+        <% if (upcomingLoan) { %>
+          <div class="summary-item-box loan-box">
+            🔔 Upcoming Loan Due: ₹<%= upcomingLoan.totalRepayable %> by 
+            <%= new Date(upcomingLoan.dueDate).toDateString() %>
+          </div>
+        <% } %>
       </div>
     </div>
-   
 
     <!-- Review Form -->
     <div class="section-box">
@@ -150,16 +169,11 @@
   <div class="section-box">
     <h3 class="mb-3">What users say:</h3>
 
-    <% 
-      let sortedReviews = reviews;
-      if (currUser) {
-        sortedReviews = reviews.sort((a, b) => {
-          const aOwn = a.author && a.author._id.toString() === currUser._id.toString();
-          const bOwn = b.author && b.author._id.toString() === currUser._id.toString();
-          return bOwn - aOwn;
-        });
-      }
-    %>
+    <% let sortedReviews = currUser ? reviews.sort((a, b) => {
+      const aOwn = a.author && a.author._id.toString() === currUser._id.toString();
+      const bOwn = b.author && b.author._id.toString() === currUser._id.toString();
+      return bOwn - aOwn;
+    }) : reviews; %>
 
     <% for(let review of sortedReviews) { %>
       <div class="card mb-3">
@@ -182,5 +196,4 @@
       </div>
     <% } %>
   </div>
-
 </div>
